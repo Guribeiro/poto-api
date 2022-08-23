@@ -1,16 +1,13 @@
-import {sign, verify} from 'jsonwebtoken';
-import ISignDTO from "../dtos/ISignDTO";
-import IJsonWebTokenProvider from "../models/IJsonWebTokenProvider";
+import { sign } from 'jsonwebtoken';
+import ISignDTO from '../dtos/ISignDTO';
+import IJsonWebTokenProvider from '../models/IJsonWebTokenProvider';
 
 class JsonWebTokenProvider implements IJsonWebTokenProvider {
-
-  public sign({payload, options, secret}: ISignDTO): string {
+  public sign({ payload, options, secret }: ISignDTO): string {
     const token = sign(payload, secret, options);
 
     return token;
   }
-
 }
-
 
 export default JsonWebTokenProvider;

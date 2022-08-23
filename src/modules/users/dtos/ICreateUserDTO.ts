@@ -9,6 +9,6 @@ export default interface ICreateUserDTO {
     district: string;
     state: string;
     street: string;
-    complement?:string;
-  }
+    complement?: string;
+  };
 }

@@ -9,7 +9,6 @@ import IUserTokensRepository from '../../../infra/repositories/IUserTokensReposi
 import IJsonWebTokenProvider from '../../../infra/providers/JsonwebtokenProvider/models/IJsonWebTokenProvider';
 import { addDays } from 'date-fns';
 
-
 interface Request {
   token: string;
 }
@@ -27,19 +26,19 @@ interface Response {
 class RefreshTokenUserCase {
   constructor(
     @inject('UsersRepository')
-    private usersRepository: IUsersRepository,
+    private readonly usersRepository: IUsersRepository,
 
     @inject('UserTokensRepository')
-    private userTokensRepository: IUserTokensRepository,
+    private readonly userTokensRepository: IUserTokensRepository,
 
     @inject('JsonWebTokenProvider')
-    private jsonwebtokenRepository: IJsonWebTokenProvider,
-  ) { }
+    private readonly jsonwebtokenRepository: IJsonWebTokenProvider,
+  ) {}
 
-  public async execute({ token }: Request):Promise<Response> {
+  public async execute({ token }: Request): Promise<Response> {
+    const { secret_refresh_token, expires_in_refresh_token } =
+      authConfig.refresh_token;
 
-    const { secret_refresh_token, expires_in_refresh_token } = authConfig.refresh_token
-    
     const decoded = verify(token, secret_refresh_token);
 
     const { sub } = decoded as unknown as IPayload;
@@ -48,19 +47,22 @@ class RefreshTokenUserCase {
 
     const user = await this.usersRepository.findOneById(user_id);
 
-    if(!user){
+    if (!user) {
       throw new Error('invalid refresh_token');
     }
 
-    const userToken = await this.userTokensRepository.findOneByUserIdAndToken(user_id, token);
+    const userToken = await this.userTokensRepository.findOneByUserIdAndToken(
+      user_id,
+      token,
+    );
 
-    if(!userToken){
+    if (!userToken) {
       throw new Error('invalid refresh_token');
     }
 
     await this.userTokensRepository.deleteById(userToken.id);
 
-    const {secret, expiresIn} = authConfig.jwt;
+    const { secret, expiresIn } = authConfig.jwt;
 
     const updated_token = this.jsonwebtokenRepository.sign({
       payload: {},
@@ -68,7 +70,7 @@ class RefreshTokenUserCase {
       options: {
         expiresIn,
         subject: user.id,
-      }
+      },
     });
 
     const refresh_token = this.jsonwebtokenRepository.sign({
@@ -76,8 +78,8 @@ class RefreshTokenUserCase {
       secret: secret_refresh_token,
       options: {
         subject: user.id,
-        expiresIn: expires_in_refresh_token
-      }
+        expiresIn: expires_in_refresh_token,
+      },
     });
 
     const refresh_token_expires_date = addDays(new Date(), 30);
@@ -86,11 +88,11 @@ class RefreshTokenUserCase {
       user_id: user.id,
       refresh_token,
       expires_date: refresh_token_expires_date,
-    })
+    });
 
     return {
       refresh_token,
-      updated_token
+      updated_token,
     };
   }
 }

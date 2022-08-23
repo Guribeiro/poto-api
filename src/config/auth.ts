@@ -5,6 +5,6 @@ export default {
   },
   refresh_token: {
     secret_refresh_token: '69a5f6454922d035bab37b026edf7247',
-    expires_in_refresh_token: '30d'
-  }
-}
+    expires_in_refresh_token: '30d',
+  },
+};
