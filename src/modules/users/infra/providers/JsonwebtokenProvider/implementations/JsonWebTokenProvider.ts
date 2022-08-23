@@ -1,4 +1,4 @@
-import {sign} from 'jsonwebtoken';
+import {sign, verify} from 'jsonwebtoken';
 import ISignDTO from "../dtos/ISignDTO";
 import IJsonWebTokenProvider from "../models/IJsonWebTokenProvider";
 
@@ -9,6 +9,7 @@ class JsonWebTokenProvider implements IJsonWebTokenProvider {
 
     return token;
   }
+
 }
 
 

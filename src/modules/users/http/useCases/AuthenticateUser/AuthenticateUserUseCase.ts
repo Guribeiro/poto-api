@@ -1,6 +1,9 @@
 import {injectable, inject} from 'tsyringe';
 import IJsonWebTokenProvider from '../../../infra/providers/JsonwebtokenProvider/models/IJsonWebTokenProvider';
 import IUsersRepository from '../../../infra/repositories/IUsersRepository';
+import IUserTokensRepository from '../../../infra/repositories/IUserTokensRepository';
+
+import {addDays} from 'date-fns';
 
 import authConfig from '../../../../../config/auth';
 
@@ -15,6 +18,7 @@ interface Request {
 interface Response {
   user: User,
   token: string;
+  refresh_token: string;
 };
 
 @injectable()
@@ -22,6 +26,9 @@ class AuthenticateUserUseCase {
   constructor(
     @inject('UsersRepository')
     private usersRepository:IUsersRepository,
+
+    @inject('UserTokensRepository')
+    private userTokensRepository:IUserTokensRepository,
 
     @inject('JsonWebTokenProvider')
     private jsonwebtokenRepository:IJsonWebTokenProvider,
@@ -48,13 +55,34 @@ class AuthenticateUserUseCase {
       payload: {},
       secret,
       options: {
-        expiresIn
+        expiresIn,
+        subject: user.id,
       }
     });
 
+    const {secret_refresh_token, expires_in_refresh_token} = authConfig.refresh_token;
+
+    const refresh_token = this.jsonwebtokenRepository.sign({
+      payload: {},
+      secret: secret_refresh_token,
+      options: {
+        subject: user.id,
+        expiresIn: expires_in_refresh_token
+      }
+    });
+
+    const refresh_token_expires_date = addDays(new Date(), 30);
+
+    await this.userTokensRepository.create({
+      user_id: user.id,
+      refresh_token,
+      expires_date: refresh_token_expires_date,
+    })
+
     return {
       user,
-      token
+      token,
+      refresh_token
     }
   }
 }

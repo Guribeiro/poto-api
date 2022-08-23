@@ -1,7 +1,6 @@
 import { PrismaClient, Users } from '@prisma/client'
 import IUsersRepository from "../../repositories/IUsersRepository";
 import ICreateUserDTO from "../../../dtos/ICreateUserDTO";
-import User from '../entities/User';
 
 class UsersRepositories implements IUsersRepository {
   private repository: PrismaClient;
@@ -54,7 +53,7 @@ class UsersRepositories implements IUsersRepository {
     return user;
   }
 
-  public async findOneByEmail(email: string): Promise<User | null> {
+  public async findOneByEmail(email: string): Promise<Users | null> {
     const user = await this.repository.users.findFirst({
       where: {
         email
