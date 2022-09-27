@@ -19,8 +19,9 @@ class CreateUserUseCase {
   public async execute({
     full_name,
     email,
+    username,
     password,
-    address,
+    avatar,
   }: Request): Promise<Users> {
     const findUserWithSameEmail = await this.usersRepository.findOneByEmail(
       email,
@@ -35,8 +36,9 @@ class CreateUserUseCase {
     const user = await this.usersRepository.create({
       full_name,
       email,
+      username,
       password: hashedPassword,
-      address,
+      avatar,
     });
 
     return user;
