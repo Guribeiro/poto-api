@@ -39,7 +39,8 @@
     ],
     "class-methods-use-this": "off",
     "@typescript-eslint/strict-boolean-expressions":"off",
-    "@typescript-eslint/naming-convention": "off"
+    "@typescript-eslint/naming-convention": "off",
+    "@typescript-eslint/restrict-template-expressions":"off"
   },
   "settings": {
     "import/resolver": {
