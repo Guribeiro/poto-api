@@ -18,9 +18,10 @@ model Users {
   address_id String?
   avatar     String?
   address    Addresses?   @relation(fields: [address_id], references: [id])
-  UserTokens UserTokens[]
-  Posts      Posts[]
+  userTokens UserTokens[]
+  posts      Posts[]
   likes      Likes[]
+  comments   Comments[]
 
   @@map("users")
 }
@@ -61,12 +62,24 @@ model Posts {
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
   likes      Likes[]
+  comments   Comments[]
 
   @@map("posts")
 }
 
 model Likes {
   id         String   @id @default(uuid())
+  user_id    String
+  user       Users    @relation(fields: [user_id], references: [id])
+  post_id    String
+  post       Posts    @relation(fields: [post_id], references: [id])
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+}
+
+model Comments {
+  id         String   @id @default(uuid())
+  content    String
   user_id    String
   user       Users    @relation(fields: [user_id], references: [id])
   post_id    String

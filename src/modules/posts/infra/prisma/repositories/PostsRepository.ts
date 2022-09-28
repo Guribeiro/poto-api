@@ -32,7 +32,16 @@ class PostsRepository implements IPostsRepository {
     return await this.repository.posts.findMany({
       include: {
         user: true,
-        likes: true,
+        likes: {
+          include: {
+            user: true,
+          },
+        },
+        comments: {
+          include: {
+            user: true,
+          },
+        },
       },
       orderBy: {
         created_at: 'desc',

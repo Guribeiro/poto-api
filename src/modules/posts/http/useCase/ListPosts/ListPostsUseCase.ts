@@ -1,9 +1,10 @@
-import { Posts, Likes } from '@prisma/client';
+import { Posts } from '@prisma/client';
 import { injectable, inject } from 'tsyringe';
 
+import IPostsRepository from '../../../infra/repositories/IPostsRepository';
 import ILikesRepository from '../../../../likes/infra/repositories/ILikesRepository';
 import IUsersRepository from '../../../../users/infra/repositories/IUsersRepository';
-import IPostsRepository from '../../../infra/repositories/IPostsRepository';
+import IPostCommentsRepository from '../../../infra/repositories/IPostCommentsRepository';
 
 @injectable()
 class ListPostsUseCase {
@@ -16,17 +17,29 @@ class ListPostsUseCase {
 
     @inject('LikesRepository')
     private readonly likesRepository: ILikesRepository,
+
+    @inject('PostCommentsRepository')
+    private readonly postCommentsRepository: IPostCommentsRepository,
   ) {}
 
   public async execute(): Promise<Posts[]> {
     const posts = await this.postsRepository.all();
 
     for await (const post of posts) {
+      const comments = await this.postCommentsRepository.findManyByPostId(
+        post.id,
+      );
       const postLikes = await this.likesRepository.findManyByPostId(post.id);
 
-      const postLikesCount = postLikes.length;
+      const _commentsCount = comments.length;
+      const _likesCount = postLikes.length;
 
-      Object.assign(post, { _likes_count: postLikesCount });
+      Object.assign(post, {
+        _likesCount,
+        _commentsCount,
+        likes: postLikes,
+        comments,
+      });
     }
 
     return posts;

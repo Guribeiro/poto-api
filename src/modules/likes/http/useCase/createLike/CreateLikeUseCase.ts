@@ -1,6 +1,7 @@
 import { Posts } from '@prisma/client';
 import { inject, injectable } from 'tsyringe';
 
+import IPostCommentsRepository from '../../../../posts/infra/repositories/IPostCommentsRepository';
 import ILikesRepository from '../../../infra/repositories/ILikesRepository';
 import IPostsRepository from '../../../../posts/infra/repositories/IPostsRepository';
 import IUsersRepository from '../../../../users/infra/repositories/IUsersRepository';
@@ -21,6 +22,9 @@ class CreateLikeUseCase {
 
     @inject('LikesRepository')
     private readonly likesRepository: ILikesRepository,
+
+    @inject('PostCommentsRepository')
+    private readonly postCommentsRepository: IPostCommentsRepository,
   ) {}
 
   public async execute({ user_id, post_id }: Request): Promise<Posts> {
@@ -42,6 +46,12 @@ class CreateLikeUseCase {
     if (findPostLikeByUser) {
       await this.likesRepository.deleteById(findPostLikeByUser.id);
 
+      const postComments = await this.postCommentsRepository.findManyByPostId(
+        post_id,
+      );
+
+      const postCommentsCount = postComments.length;
+
       const postLikes = await this.likesRepository.findManyByPostId(post.id);
 
       const postLikesCount = postLikes.length;
@@ -49,6 +59,8 @@ class CreateLikeUseCase {
       Object.assign(post, {
         likes: postLikes,
         _likesCount: postLikesCount,
+        comments: postComments,
+        _commentsCount: postCommentsCount,
       });
 
       return post;
@@ -59,6 +71,12 @@ class CreateLikeUseCase {
       post_id,
     });
 
+    const postComments = await this.postCommentsRepository.findManyByPostId(
+      post_id,
+    );
+
+    const postCommentsCount = postComments.length;
+
     const postLikes = await this.likesRepository.findManyByPostId(post.id);
 
     const postLikesCount = postLikes.length;
@@ -66,6 +84,8 @@ class CreateLikeUseCase {
     Object.assign(post, {
       likes: postLikes,
       _likesCount: postLikesCount,
+      comments: postComments,
+      _commentsCount: postCommentsCount,
     });
 
     return post;

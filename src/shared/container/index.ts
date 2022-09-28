@@ -14,6 +14,9 @@ import UserTokensRepository from '../../modules/users/infra/prisma/repositories/
 import IUsersRepository from '../../modules/users/infra/repositories/IUsersRepository';
 import UsersRepository from '../../modules/users/infra/prisma/repositories/UsersRepository';
 
+import IPostCommentsRepository from '../../modules/posts/infra/repositories/IPostCommentsRepository';
+import PostCommentsRepository from '../../modules/posts/infra/prisma/repositories/PostCommentsRepository';
+
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
   UsersRepository,
@@ -32,4 +35,9 @@ container.registerSingleton<IPostsRepository>(
 container.registerSingleton<ILikesRepository>(
   'LikesRepository',
   LikesRepository,
+);
+
+container.registerSingleton<IPostCommentsRepository>(
+  'PostCommentsRepository',
+  PostCommentsRepository,
 );

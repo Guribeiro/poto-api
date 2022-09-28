@@ -19,7 +19,6 @@ class CreatePostController {
 
       return response.status(200).json(post);
     } catch (error) {
-      console.log(error);
       const err = error as Error;
       return response.status(400).json({ error: err.message });
     }
