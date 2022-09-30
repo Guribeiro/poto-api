@@ -15,8 +15,9 @@ export default interface IPostCommentsRepository {
   create: (data: ICreatePostCommentDTO) => Promise<Comments>;
   findManyByUserId: (user_id: string) => Promise<Comments[]>;
   findManyByPostId: (post_id: string) => Promise<Comments[]>;
-  findOneById: (post_id: string) => Promise<Comments | null>;
+  findOneById: (comment_id: string) => Promise<Comments | null>;
   findOneByPostIdAndUserId: (
     data: IFindOneByPostIdAndUserIdDTO,
   ) => Promise<Comments | null>;
+  deleteOneById: (comment_id: string) => Promise<void>;
 }

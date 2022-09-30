@@ -9,6 +9,7 @@ import ListPostsController from '../useCase/ListPosts/ListPostsController';
 import CreatePostController from '../useCase/CreatePost/CreatePostController';
 import CreatePostCommentController from '../useCase/CreatePostComment/CreatePostCommentController';
 import ListPostCommentsController from '../useCase/ListPostComments/ListPostCommentsController';
+import DeletePostCommentController from '../useCase/DeletePostComment/DeletePostCommentController';
 
 const postsRouter = Router();
 const { posts } = uploadConfig;
@@ -18,6 +19,7 @@ const listPostsController = new ListPostsController();
 const createPostController = new CreatePostController();
 const createPostCommentController = new CreatePostCommentController();
 const listPostCommentsController = new ListPostCommentsController();
+const deletePostCommentController = new DeletePostCommentController();
 
 postsRouter.post(
   '/',
@@ -27,7 +29,7 @@ postsRouter.post(
 );
 
 postsRouter.post(
-  '/:post_id/comment',
+  '/:post_id/comments',
   ensureAuthentication,
   createPostCommentController.handle,
 );
@@ -36,6 +38,12 @@ postsRouter.get(
   '/:post_id/comments',
   ensureAuthentication,
   listPostCommentsController.handle,
+);
+
+postsRouter.delete(
+  '/:post_id/comments/:comment_id',
+  ensureAuthentication,
+  deletePostCommentController.handle,
 );
 
 postsRouter.post(

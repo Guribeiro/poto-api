@@ -81,6 +81,14 @@ class PostCommentsRepository implements IPostCommentsRepository {
       },
     });
   }
+
+  public async deleteOneById(comment_id: string): Promise<void> {
+    await this.repository.comments.delete({
+      where: {
+        id: comment_id,
+      },
+    });
+  }
 }
 
 export default PostCommentsRepository;
