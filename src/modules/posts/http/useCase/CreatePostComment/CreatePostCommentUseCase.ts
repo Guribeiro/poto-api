@@ -3,7 +3,7 @@ import { injectable, inject } from 'tsyringe';
 
 import IPostsRepository from '../../../infra/repositories/IPostsRepository';
 import IUsersRepository from '../../../../users/infra/repositories/IUsersRepository';
-import ILikesRepository from '../../../../likes/infra/repositories/ILikesRepository';
+import IPostLikesRepository from '../../../infra/repositories/IPostLikesRepository';
 import IPostCommentsRepository from '../../../infra/repositories/IPostCommentsRepository';
 
 interface Request {
@@ -24,8 +24,8 @@ class CreatePostCommentUseCase {
     @inject('PostCommentsRepository')
     private readonly postCommentsRepository: IPostCommentsRepository,
 
-    @inject('LikesRepository')
-    private readonly likesRepository: ILikesRepository,
+    @inject('PostLikesRepository')
+    private readonly postLikesRepository: IPostLikesRepository,
   ) {}
 
   public async execute({ user_id, post_id, content }: Request): Promise<Posts> {
@@ -51,7 +51,7 @@ class CreatePostCommentUseCase {
       post_id,
     );
 
-    const postLikes = await this.likesRepository.findManyByPostId(post.id);
+    const postLikes = await this.postLikesRepository.findManyByPostId(post.id);
 
     const postLikesCount = postLikes.length;
     const postCommentsCount = postComments.length;

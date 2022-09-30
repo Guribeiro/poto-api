@@ -2,7 +2,7 @@ import { Posts } from '@prisma/client';
 import { injectable, inject } from 'tsyringe';
 
 import IPostsRepository from '../../../infra/repositories/IPostsRepository';
-import ILikesRepository from '../../../../likes/infra/repositories/ILikesRepository';
+import IPostLikesRepository from '../../../infra/repositories/IPostLikesRepository';
 import IUsersRepository from '../../../../users/infra/repositories/IUsersRepository';
 import IPostCommentsRepository from '../../../infra/repositories/IPostCommentsRepository';
 
@@ -15,8 +15,8 @@ class ListPostsUseCase {
     @inject('PostsRepository')
     private readonly postsRepository: IPostsRepository,
 
-    @inject('LikesRepository')
-    private readonly likesRepository: ILikesRepository,
+    @inject('PostLikesRepository')
+    private readonly postLikesRepository: IPostLikesRepository,
 
     @inject('PostCommentsRepository')
     private readonly postCommentsRepository: IPostCommentsRepository,
@@ -29,7 +29,9 @@ class ListPostsUseCase {
       const comments = await this.postCommentsRepository.findManyByPostId(
         post.id,
       );
-      const postLikes = await this.likesRepository.findManyByPostId(post.id);
+      const postLikes = await this.postLikesRepository.findManyByPostId(
+        post.id,
+      );
 
       const _commentsCount = comments.length;
       const _likesCount = postLikes.length;

@@ -7,6 +7,7 @@ import ensureAuthentication from '../../../users/http/middlewares/ensureAuthenti
 
 import ListPostsController from '../useCase/ListPosts/ListPostsController';
 import CreatePostController from '../useCase/CreatePost/CreatePostController';
+import CreatePostLikeController from '../useCase/CreatePostLike/CreatePostLikeController';
 import CreatePostCommentController from '../useCase/CreatePostComment/CreatePostCommentController';
 import ListPostCommentsController from '../useCase/ListPostComments/ListPostCommentsController';
 import DeletePostCommentController from '../useCase/DeletePostComment/DeletePostCommentController';
@@ -17,6 +18,7 @@ const uploadPosts = multer(posts);
 
 const listPostsController = new ListPostsController();
 const createPostController = new CreatePostController();
+const createPostLikeController = new CreatePostLikeController();
 const createPostCommentController = new CreatePostCommentController();
 const listPostCommentsController = new ListPostCommentsController();
 const deletePostCommentController = new DeletePostCommentController();
@@ -32,6 +34,12 @@ postsRouter.post(
   '/:post_id/comments',
   ensureAuthentication,
   createPostCommentController.handle,
+);
+
+postsRouter.post(
+  '/:post_id/likes',
+  ensureAuthentication,
+  createPostLikeController.handle,
 );
 
 postsRouter.get(

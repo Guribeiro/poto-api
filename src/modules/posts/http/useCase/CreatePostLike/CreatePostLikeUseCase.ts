@@ -1,9 +1,9 @@
 import { Posts } from '@prisma/client';
 import { inject, injectable } from 'tsyringe';
 
-import IPostCommentsRepository from '../../../../posts/infra/repositories/IPostCommentsRepository';
-import ILikesRepository from '../../../infra/repositories/ILikesRepository';
-import IPostsRepository from '../../../../posts/infra/repositories/IPostsRepository';
+import IPostCommentsRepository from '../../../infra/repositories/IPostCommentsRepository';
+import IPostLikesRepository from '../../../infra/repositories/IPostLikesRepository';
+import IPostsRepository from '../../../infra/repositories/IPostsRepository';
 import IUsersRepository from '../../../../users/infra/repositories/IUsersRepository';
 
 interface Request {
@@ -12,7 +12,7 @@ interface Request {
 }
 
 @injectable()
-class CreateLikeUseCase {
+class CreatePostLikeUseCase {
   constructor(
     @inject('UsersRepository')
     private readonly usersRepository: IUsersRepository,
@@ -20,8 +20,8 @@ class CreateLikeUseCase {
     @inject('PostsRepository')
     private readonly postsRepository: IPostsRepository,
 
-    @inject('LikesRepository')
-    private readonly likesRepository: ILikesRepository,
+    @inject('PostLikesRepository')
+    private readonly postLikesRepository: IPostLikesRepository,
 
     @inject('PostCommentsRepository')
     private readonly postCommentsRepository: IPostCommentsRepository,
@@ -41,10 +41,10 @@ class CreateLikeUseCase {
     }
 
     const findPostLikeByUser =
-      await this.likesRepository.findOneByPostIdAndUserId(post_id, user_id);
+      await this.postLikesRepository.findOneByPostIdAndUserId(post_id, user_id);
 
     if (findPostLikeByUser) {
-      await this.likesRepository.deleteById(findPostLikeByUser.id);
+      await this.postLikesRepository.deleteById(findPostLikeByUser.id);
 
       const postComments = await this.postCommentsRepository.findManyByPostId(
         post_id,
@@ -52,7 +52,9 @@ class CreateLikeUseCase {
 
       const postCommentsCount = postComments.length;
 
-      const postLikes = await this.likesRepository.findManyByPostId(post.id);
+      const postLikes = await this.postLikesRepository.findManyByPostId(
+        post.id,
+      );
 
       const postLikesCount = postLikes.length;
 
@@ -66,7 +68,7 @@ class CreateLikeUseCase {
       return post;
     }
 
-    await this.likesRepository.create({
+    await this.postLikesRepository.create({
       user_id,
       post_id,
     });
@@ -77,7 +79,7 @@ class CreateLikeUseCase {
 
     const postCommentsCount = postComments.length;
 
-    const postLikes = await this.likesRepository.findManyByPostId(post.id);
+    const postLikes = await this.postLikesRepository.findManyByPostId(post.id);
 
     const postLikesCount = postLikes.length;
 
@@ -92,4 +94,4 @@ class CreateLikeUseCase {
   }
 }
 
-export default CreateLikeUseCase;
+export default CreatePostLikeUseCase;

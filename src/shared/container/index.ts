@@ -2,8 +2,8 @@ import { container } from 'tsyringe';
 import '../../modules/users/infra/providers';
 import './providers';
 
-import ILikesRepository from '../../modules/likes/infra/repositories/ILikesRepository';
-import LikesRepository from '../../modules/likes/infra/prisma/repositories/LikesRepository';
+import IPostLikesRepository from '../../modules/posts/infra/repositories/IPostLikesRepository';
+import PostLikesRepository from '../../modules/posts/infra/prisma/repositories/PostLikesRepository';
 
 import IPostsRepository from '../../modules/posts/infra/repositories/IPostsRepository';
 import PostsRepository from '../../modules/posts/infra/prisma/repositories/PostsRepository';
@@ -32,9 +32,9 @@ container.registerSingleton<IPostsRepository>(
   PostsRepository,
 );
 
-container.registerSingleton<ILikesRepository>(
-  'LikesRepository',
-  LikesRepository,
+container.registerSingleton<IPostLikesRepository>(
+  'PostLikesRepository',
+  PostLikesRepository,
 );
 
 container.registerSingleton<IPostCommentsRepository>(

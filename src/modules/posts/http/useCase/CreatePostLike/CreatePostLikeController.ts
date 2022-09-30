@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
-import CreateLikeUseCase from './CreateLikeUseCase';
+import CreateLikeUseCase from './CreatePostLikeUseCase';
 
-class CreateLikeController {
+class CreatePostLikeController {
   public async handle(request: Request, response: Response): Promise<Response> {
     try {
       const { id } = request.user;
@@ -23,4 +23,4 @@ class CreateLikeController {
   }
 }
 
-export default CreateLikeController;
+export default CreatePostLikeController;
