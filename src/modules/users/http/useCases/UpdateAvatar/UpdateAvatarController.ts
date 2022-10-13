@@ -16,12 +16,9 @@ class UpdateAvatarController {
         avatar: filename,
       });
 
-      console.log(user);
-
       return response.status(200).json(user);
     } catch (error) {
       const err = error as Error;
-      console.log({ error });
       return response.status(400).json({ error: err.message });
     }
   }

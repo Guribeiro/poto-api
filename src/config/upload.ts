@@ -11,7 +11,6 @@ export default {
     storage: multer.diskStorage({
       destination: postsTempFolder,
       filename(request, file, callback) {
-        console.log(request);
         const fileHash = randomUUID();
         const fileName = `${fileHash}-${file.originalname}`;
 

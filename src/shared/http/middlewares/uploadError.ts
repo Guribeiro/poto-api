@@ -16,10 +16,8 @@ function uploadFile(
 
   upload(request, response, function (error) {
     if (error instanceof multer.MulterError) {
-      console.log(error);
       return response.status(400).json({ error: error.message });
     } else if (error) {
-      console.log(error);
       return response.status(500);
     }
 
