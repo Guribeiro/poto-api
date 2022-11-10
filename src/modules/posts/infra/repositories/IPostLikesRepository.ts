@@ -8,6 +8,7 @@ export interface ICreateLikeDTO {
 export default interface IPostLikesRepository {
   create: (data: ICreateLikeDTO) => Promise<Likes>;
   findManyByPostId: (post_id: string) => Promise<Likes[]>;
+  findManyByUserId: (user_id: string) => Promise<Likes[]>;
   findOneByPostId: (post_id: string) => Promise<Likes | null>;
   findOneByPostIdAndUserId: (
     post_id: string,

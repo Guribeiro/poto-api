@@ -38,6 +38,20 @@ class LikesRepository implements ILikesRepository {
     return likes;
   }
 
+  public async findManyByUserId(user_id: string): Promise<Likes[]> {
+    const likes = await this.repository.likes.findMany({
+      where: {
+        user_id,
+      },
+      include: {
+        user: true,
+        post: true,
+      },
+    });
+
+    return likes;
+  }
+
   public async findOneByPostId(post_id: string): Promise<Likes | null> {
     return await this.repository.likes.findFirst({
       where: {
