@@ -1,4 +1,5 @@
 import { PrismaClient, UserTokens } from '@prisma/client';
+import prisma from '../../../../../shared/prisma';
 
 import IUserTokensRepository from '../../repositories/IUserTokensRepository';
 import ICreateUserTokenDTO from '../../../dtos/ICreateUserTokenDTO';
@@ -7,7 +8,7 @@ class UserTokensRepository implements IUserTokensRepository {
   private readonly repository: PrismaClient;
 
   constructor() {
-    this.repository = new PrismaClient();
+    this.repository = prisma;
   }
 
   public async create({

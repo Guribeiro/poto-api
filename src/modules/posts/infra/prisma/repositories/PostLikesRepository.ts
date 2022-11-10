@@ -1,4 +1,5 @@
 import { PrismaClient, Likes } from '@prisma/client';
+import prisma from '../../../../../shared/prisma';
 import ILikesRepository, {
   ICreateLikeDTO,
 } from '../../repositories/IPostLikesRepository';
@@ -7,7 +8,7 @@ class LikesRepository implements ILikesRepository {
   private readonly repository: PrismaClient;
 
   constructor() {
-    this.repository = new PrismaClient();
+    this.repository = prisma;
   }
 
   public async create({ user_id, post_id }: ICreateLikeDTO): Promise<Likes> {
