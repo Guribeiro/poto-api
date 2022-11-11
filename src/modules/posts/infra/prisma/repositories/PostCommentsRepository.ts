@@ -1,4 +1,6 @@
 import { PrismaClient, Comments } from '@prisma/client';
+import prisma from '../../../../../shared/prisma';
+
 import IPostCommentsRepository, {
   ICreatePostCommentDTO,
   IFindOneByPostIdAndUserIdDTO,
@@ -7,7 +9,7 @@ import IPostCommentsRepository, {
 class PostCommentsRepository implements IPostCommentsRepository {
   private readonly repository: PrismaClient;
   constructor() {
-    this.repository = new PrismaClient();
+    this.repository = prisma;
   }
 
   async findOneByPostIdAndUserId({

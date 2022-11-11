@@ -11,6 +11,7 @@ import CreatePostLikeController from '../useCase/CreatePostLike/CreatePostLikeCo
 import CreatePostCommentController from '../useCase/CreatePostComment/CreatePostCommentController';
 import ListPostCommentsController from '../useCase/ListPostComments/ListPostCommentsController';
 import DeletePostCommentController from '../useCase/DeletePostComment/DeletePostCommentController';
+import ListUserPostsLikedController from '../useCase/listUserPostsLiked/ListUserPostsLikedController';
 
 const postsRouter = Router();
 const { posts } = uploadConfig;
@@ -22,6 +23,7 @@ const createPostLikeController = new CreatePostLikeController();
 const createPostCommentController = new CreatePostCommentController();
 const listPostCommentsController = new ListPostCommentsController();
 const deletePostCommentController = new DeletePostCommentController();
+const listUserPostsLikedController = new ListUserPostsLikedController();
 
 postsRouter.post(
   '/',
@@ -59,6 +61,12 @@ postsRouter.post(
   ensureAuthentication,
   uploadPosts.single('photo'),
   createPostController.handle,
+);
+
+postsRouter.get(
+  '/me/likes',
+  ensureAuthentication,
+  listUserPostsLikedController.handle,
 );
 
 postsRouter.get('/', ensureAuthentication, listPostsController.handle);

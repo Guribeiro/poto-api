@@ -1,11 +1,12 @@
 import { PrismaClient, Users } from '@prisma/client';
+import prisma from '../../../../../shared/prisma';
 import IUsersRepository from '../../repositories/IUsersRepository';
 import ICreateUserDTO from '../../../dtos/ICreateUserDTO';
 
 class UsersRepository implements IUsersRepository {
   private readonly repository: PrismaClient;
   constructor() {
-    this.repository = new PrismaClient();
+    this.repository = prisma;
   }
 
   public async create({

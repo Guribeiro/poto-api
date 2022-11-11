@@ -1,11 +1,12 @@
 import { PrismaClient, Posts } from '@prisma/client';
+import prisma from '../../../../../shared/prisma';
 import ICreatePostDTO from '../../../dtos/ICreatePostDTO';
 import IPostsRepository from '../../repositories/IPostsRepository';
 
 class PostsRepository implements IPostsRepository {
   private readonly repository: PrismaClient;
   constructor() {
-    this.repository = new PrismaClient();
+    this.repository = prisma;
   }
 
   public async create({

@@ -1,5 +1,6 @@
 import { Users } from '@prisma/client';
 import { injectable, inject } from 'tsyringe';
+import { exclude } from '../../../../../shared/prisma';
 import IUsersRepository from '../../../infra/repositories/IUsersRepository';
 
 interface Request {
@@ -14,7 +15,10 @@ class UpdateEmailUseCase {
     private readonly usersRepository: IUsersRepository,
   ) {}
 
-  public async execute({ user_id, email }: Request): Promise<Users> {
+  public async execute({
+    user_id,
+    email,
+  }: Request): Promise<Omit<Users, 'password'>> {
     const user = await this.usersRepository.findOneById(user_id);
 
     if (!user) {
@@ -31,7 +35,9 @@ class UpdateEmailUseCase {
 
     await this.usersRepository.save(user);
 
-    return user;
+    const userWithoutPassword = exclude(user, 'password');
+
+    return userWithoutPassword;
   }
 }
 

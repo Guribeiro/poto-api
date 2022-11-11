@@ -2,6 +2,7 @@ import { injectable, inject } from 'tsyringe';
 import { Users } from '@prisma/client';
 import IUsersRepository from '../../../infra/repositories/IUsersRepository';
 import IStorageProvider from '../../../../../shared/container/providers/StorageProvider/models/IStorageProvider';
+import { exclude } from '../../../../../shared/prisma';
 interface IRequest {
   user_id: string;
   avatar: string;
@@ -17,7 +18,10 @@ class UpdateAvatarUseCase {
     private readonly storageProvider: IStorageProvider,
   ) {}
 
-  public async execute({ avatar, user_id }: IRequest): Promise<Users> {
+  public async execute({
+    avatar,
+    user_id,
+  }: IRequest): Promise<Omit<Users, 'password'>> {
     const user = await this.usersRepository.findOneById(user_id);
 
     if (!user) throw new Error('user could not be found');
@@ -32,7 +36,9 @@ class UpdateAvatarUseCase {
 
     await this.usersRepository.save(user);
 
-    return user;
+    const userWithoutPassword = exclude(user, 'password');
+
+    return userWithoutPassword;
   }
 }
 

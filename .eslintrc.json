@@ -40,7 +40,9 @@
     "class-methods-use-this": "off",
     "@typescript-eslint/strict-boolean-expressions":"off",
     "@typescript-eslint/naming-convention": "off",
-    "@typescript-eslint/restrict-template-expressions":"off"
+    "@typescript-eslint/restrict-template-expressions":"off",
+    "@typescript-eslint/no-throw-literal":"off",
+    "@typescript-eslint/no-dynamic-delete":"off"
   },
   "settings": {
     "import/resolver": {
