@@ -1,5 +1,6 @@
 import { injectable, inject } from 'tsyringe';
 import { Users } from '@prisma/client';
+import { exclude } from '../../../../../shared/prisma';
 import ICreateUserDTO from '../../../dtos/ICreateUserDTO';
 import IUsersRepository from '../../../infra/repositories/IUsersRepository';
 import IHashProvider from '../../../infra/providers/HashProvider/models/IHashProvider';
@@ -22,7 +23,7 @@ class CreateUserUseCase {
     username,
     password,
     avatar,
-  }: Request): Promise<Users> {
+  }: Request): Promise<Omit<Users, 'password'>> {
     const findUserWithSameEmail = await this.usersRepository.findOneByEmail(
       email,
     );
@@ -41,7 +42,9 @@ class CreateUserUseCase {
       avatar,
     });
 
-    return user;
+    const userWithoutPassword = exclude(user, 'password');
+
+    return userWithoutPassword;
   }
 }
 

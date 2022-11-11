@@ -1,5 +1,6 @@
 import { injectable, inject } from 'tsyringe';
 import { Users } from '@prisma/client';
+import { exclude } from '../../../../../shared/prisma';
 import IJsonWebTokenProvider from '../../../infra/providers/JsonwebtokenProvider/models/IJsonWebTokenProvider';
 import IUsersRepository from '../../../infra/repositories/IUsersRepository';
 import IUserTokensRepository from '../../../infra/repositories/IUserTokensRepository';
@@ -17,7 +18,7 @@ interface Request {
 }
 
 interface Response {
-  user: Users;
+  user: Omit<Users, 'password'>;
   token: string;
   refresh_token: string;
 }
@@ -85,8 +86,10 @@ class AuthenticateUserUseCase {
       expires_date: refresh_token_expires_date,
     });
 
+    const userWithoutPassword = exclude(user, 'password');
+
     return {
-      user,
+      user: userWithoutPassword,
       token,
       refresh_token,
     };
