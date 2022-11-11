@@ -77,8 +77,8 @@ class RefreshTokenUserCase {
       payload: {},
       secret: secret_refresh_token,
       options: {
-        subject: user.id,
         expiresIn: expires_in_refresh_token,
+        subject: user.id,
       },
     });
 
