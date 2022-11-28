@@ -1,7 +1,7 @@
 import { PrismaClient, Posts } from '@prisma/client';
 import prisma from '../../../../../shared/prisma';
 import ICreatePostDTO from '../../../dtos/ICreatePostDTO';
-import IPostsRepository from '../../repositories/IPostsRepository';
+import IPostsRepository, { IAllDTO } from '../../repositories/IPostsRepository';
 
 class PostsRepository implements IPostsRepository {
   private readonly repository: PrismaClient;
@@ -29,8 +29,10 @@ class PostsRepository implements IPostsRepository {
     return post;
   }
 
-  public async all(): Promise<Posts[]> {
+  public async all({ page, take }: IAllDTO): Promise<Posts[]> {
     return await this.repository.posts.findMany({
+      skip: page * take,
+      take,
       include: {
         user: true,
         likes: {

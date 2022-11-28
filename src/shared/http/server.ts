@@ -13,7 +13,7 @@ const app = express();
 
 app.use(cors());
 
-app.use(express.json());
+app.use(express.json({ limit: '200mb' }));
 
 app.use('/files/posts', express.static(uploadConfig.posts.directory));
 app.use('/files/avatars', express.static(uploadConfig.avatars.directory));
