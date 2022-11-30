@@ -32,7 +32,7 @@ class RefreshTokenUserCase {
     private readonly userTokensRepository: IUserTokensRepository,
 
     @inject('JsonWebTokenProvider')
-    private readonly jsonwebtokenRepository: IJsonWebTokenProvider,
+    private readonly jsonwebtokenProvider: IJsonWebTokenProvider,
   ) {}
 
   public async execute({ token }: Request): Promise<Response> {
@@ -64,7 +64,7 @@ class RefreshTokenUserCase {
 
     const { secret, expiresIn } = authConfig.jwt;
 
-    const updated_token = this.jsonwebtokenRepository.sign({
+    const updated_token = this.jsonwebtokenProvider.sign({
       payload: {},
       secret,
       options: {
@@ -73,7 +73,7 @@ class RefreshTokenUserCase {
       },
     });
 
-    const refresh_token = this.jsonwebtokenRepository.sign({
+    const refresh_token = this.jsonwebtokenProvider.sign({
       payload: {},
       secret: secret_refresh_token,
       options: {
