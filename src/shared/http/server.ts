@@ -1,6 +1,7 @@
 import 'reflect-metadata';
-import express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors';
+import express, { Request, Response, NextFunction } from 'express';
+
 import cors from 'cors';
 import routes from './routes';
 import uploadConfig from '../../config/upload';
@@ -28,6 +29,7 @@ app.use(
       });
     }
 
+    console.log(err);
     return response.status(500).json({
       message: `Internal server error - ${err.message}`,
     });
