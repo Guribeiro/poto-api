@@ -59,6 +59,8 @@ model Posts {
   user       Users    @relation(fields: [user_id], references: [id])
   subtitle   String?
   photo      String
+  latitude   Float?
+  longitude  Float?
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
   likes      Likes[]

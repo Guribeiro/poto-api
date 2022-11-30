@@ -13,12 +13,16 @@ class PostsRepository implements IPostsRepository {
     user_id,
     subtitle,
     photo,
+    latitude,
+    longitude,
   }: ICreatePostDTO): Promise<Posts> {
     const post = await this.repository.posts.create({
       data: {
         user_id,
         subtitle,
         photo,
+        latitude,
+        longitude,
       },
       include: {
         user: true,

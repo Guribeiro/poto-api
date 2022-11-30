@@ -8,6 +8,8 @@ interface Request {
   user_id: string;
   subtitle: string;
   photo: string;
+  latitude: number;
+  longitude: number;
 }
 
 @injectable()
@@ -20,7 +22,13 @@ class CreatePostUseCase {
     private readonly postsRepository: IPostsRepository,
   ) {}
 
-  public async execute({ user_id, subtitle, photo }: Request): Promise<Posts> {
+  public async execute({
+    user_id,
+    subtitle,
+    photo,
+    latitude,
+    longitude,
+  }: Request): Promise<Posts> {
     const user = await this.usersRepository.findOneById(user_id);
 
     if (!user) {
@@ -31,6 +39,8 @@ class CreatePostUseCase {
       user_id,
       subtitle,
       photo,
+      latitude,
+      longitude,
     });
 
     return post;
