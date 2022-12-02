@@ -1,8 +1,10 @@
 import { Users } from '@prisma/client';
 import { injectable, inject } from 'tsyringe';
-import IUsersRepository from '../../../infra/repositories/IUsersRepository';
-import { exclude } from '../../../../../shared/prisma';
-import IPostsRepository from '../../../../posts/infra/repositories/IPostsRepository';
+
+import IUsersRepository from '@modules/users/infra/repositories/IUsersRepository';
+import IPostsRepository from '@modules/posts/infra/repositories/IPostsRepository';
+
+import { exclude } from '@shared/prisma';
 
 interface IRequest {
   user_id: string;

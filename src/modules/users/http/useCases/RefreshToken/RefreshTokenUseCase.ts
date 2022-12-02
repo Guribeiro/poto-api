@@ -1,13 +1,13 @@
 import { injectable, inject } from 'tsyringe';
 
+import { addDays } from 'date-fns';
 import { verify } from 'jsonwebtoken';
 
-import authConfig from '../../../../../config/auth';
+import IUsersRepository from '@modules/users/infra/repositories/IUsersRepository';
+import IUserTokensRepository from '@modules/users/infra/repositories/IUserTokensRepository';
+import IJsonWebTokenProvider from '@modules/users/infra/providers/JsonwebtokenProvider/models/IJsonWebTokenProvider';
 
-import IUsersRepository from '../../../infra/repositories/IUsersRepository';
-import IUserTokensRepository from '../../../infra/repositories/IUserTokensRepository';
-import IJsonWebTokenProvider from '../../../infra/providers/JsonwebtokenProvider/models/IJsonWebTokenProvider';
-import { addDays } from 'date-fns';
+import authConfig from '@config/auth';
 
 interface Request {
   token: string;

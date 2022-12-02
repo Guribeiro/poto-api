@@ -1,7 +1,9 @@
 import { PrismaClient, Users } from '@prisma/client';
-import prisma from '../../../../../shared/prisma';
-import IUsersRepository from '../../repositories/IUsersRepository';
-import ICreateUserDTO from '../../../dtos/ICreateUserDTO';
+
+import IUsersRepository from '@modules/users/infra/repositories/IUsersRepository';
+import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
+
+import prisma from '@shared/prisma';
 
 class UsersRepository implements IUsersRepository {
   private readonly repository: PrismaClient;

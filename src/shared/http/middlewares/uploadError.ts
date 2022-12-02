@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import multer from 'multer';
 
-import uploadConfig from '../../../config/upload';
+import uploadConfig from '@config/upload';
 
 const { posts } = uploadConfig;
 

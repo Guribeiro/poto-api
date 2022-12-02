@@ -8,7 +8,7 @@ import UpdateNameController from '../useCases/UpdateName/UpdateNameController';
 
 import ensureAuthentication from '../middlewares/ensureAuthenticate';
 
-import uploadConfig from '../../../../config/upload';
+import uploadConfig from '@config/upload';
 
 const updateUsernameController = new UpdateUsernameController();
 const updateAvatarController = new UpdateAvatarController();

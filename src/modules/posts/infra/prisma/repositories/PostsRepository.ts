@@ -1,6 +1,6 @@
 import { PrismaClient, Posts } from '@prisma/client';
-import prisma from '../../../../../shared/prisma';
-import ICreatePostDTO from '../../../dtos/ICreatePostDTO';
+import prisma from '@shared/prisma';
+import ICreatePostDTO from '@modules/posts/dtos/ICreatePostDTO';
 import IPostsRepository, { IAllDTO } from '../../repositories/IPostsRepository';
 
 class PostsRepository implements IPostsRepository {

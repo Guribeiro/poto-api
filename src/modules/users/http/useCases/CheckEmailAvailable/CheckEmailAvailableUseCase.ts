@@ -1,5 +1,5 @@
 import { injectable, inject } from 'tsyringe';
-import IUsersRepository from '../../../infra/repositories/IUsersRepository';
+import IUsersRepository from '@modules/users/infra/repositories/IUsersRepository';
 
 interface Request {
   email: string;

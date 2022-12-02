@@ -1,9 +1,11 @@
 import { injectable, inject } from 'tsyringe';
+
+import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
+import IUsersRepository from '@modules/users/infra/repositories/IUsersRepository';
+import IHashProvider from '@modules/users/infra/providers/HashProvider/models/IHashProvider';
+
 import { Users } from '@prisma/client';
-import { exclude } from '../../../../../shared/prisma';
-import ICreateUserDTO from '../../../dtos/ICreateUserDTO';
-import IUsersRepository from '../../../infra/repositories/IUsersRepository';
-import IHashProvider from '../../../infra/providers/HashProvider/models/IHashProvider';
+import { exclude } from '@shared/prisma';
 
 interface Request extends ICreateUserDTO {}
 

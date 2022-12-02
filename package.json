@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules src/shared/http/server.ts"
+    "dev": "ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/shared/http/server.ts"
   },
   "dependencies": {
     "@prisma/client": "^4.3.1",
@@ -37,6 +37,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-react": "^7.30.1",
-    "prettier": "^2.7.1"
+    "prettier": "^2.7.1",
+    "tsconfig-paths": "^4.1.0"
   }
 }

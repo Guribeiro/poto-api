@@ -1,9 +1,9 @@
 import { Router } from 'express';
 
 import multer from 'multer';
-import uploadConfig from '../../../../config/upload';
+import uploadConfig from '@config/upload';
 
-import ensureAuthentication from '../../../users/http/middlewares/ensureAuthenticate';
+import ensureAuthentication from '@modules/users/http/middlewares/ensureAuthenticate';
 
 import ListPostsController from '../useCase/ListPosts/ListPostsController';
 import CreatePostController from '../useCase/CreatePost/CreatePostController';
@@ -14,7 +14,9 @@ import DeletePostCommentController from '../useCase/DeletePostComment/DeletePost
 import ListUserPostsLikedController from '../useCase/listUserPostsLiked/ListUserPostsLikedController';
 
 const postsRouter = Router();
+
 const { posts } = uploadConfig;
+
 const uploadPosts = multer(posts);
 
 const listPostsController = new ListPostsController();

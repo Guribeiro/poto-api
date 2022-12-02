@@ -1,6 +1,7 @@
 import { Router } from 'express';
-import ListFeedPostsController from '../useCases/ListFeedPosts/ListFeedPostsController';
-import ensureAuthentication from '../../../users/http/middlewares/ensureAuthenticate';
+
+import ListFeedPostsController from '@modules/feed/http/useCases/ListFeedPosts/ListFeedPostsController';
+import ensureAuthentication from '@modules/users/http/middlewares/ensureAuthenticate';
 
 const feedRouter = Router();
 

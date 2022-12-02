@@ -1,5 +1,5 @@
 import { PrismaClient, Comments } from '@prisma/client';
-import prisma from '../../../../../shared/prisma';
+import prisma from '@shared/prisma';
 
 import IPostCommentsRepository, {
   ICreatePostCommentDTO,

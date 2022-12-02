@@ -1,7 +1,8 @@
 import { Users } from '@prisma/client';
 import { injectable, inject } from 'tsyringe';
-import { exclude } from '../../../../../shared/prisma';
-import IUsersRepository from '../../../infra/repositories/IUsersRepository';
+
+import IUsersRepository from '@modules/users/infra/repositories/IUsersRepository';
+import { exclude } from '@shared/prisma';
 
 interface Request {
   user_id: string;

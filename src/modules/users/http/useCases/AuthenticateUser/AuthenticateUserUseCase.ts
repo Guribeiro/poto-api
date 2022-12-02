@@ -2,15 +2,14 @@ import { injectable, inject } from 'tsyringe';
 import { Users } from '@prisma/client';
 import { addDays } from 'date-fns';
 
-import IUsersRepository from '../../../infra/repositories/IUsersRepository';
-import IUserTokensRepository from '../../../infra/repositories/IUserTokensRepository';
-import IHashProvider from '../../../infra/providers/HashProvider/models/IHashProvider';
-import IJsonWebTokenProvider from '../../../infra/providers/JsonwebtokenProvider/models/IJsonWebTokenProvider';
+import IUsersRepository from '@modules/users/infra/repositories/IUsersRepository';
+import IUserTokensRepository from '@modules/users/infra/repositories/IUserTokensRepository';
+import IHashProvider from '@modules/users/infra/providers/HashProvider/models/IHashProvider';
+import IJsonWebTokenProvider from '@modules/users/infra/providers/JsonwebtokenProvider/models/IJsonWebTokenProvider';
 
-import AppError from '../../../../../shared/errors/AppError';
-import { exclude } from '../../../../../shared/prisma';
-
-import authConfig from '../../../../../config/auth';
+import AppError from '@shared/errors/AppError';
+import { exclude } from '@shared/prisma';
+import authConfig from '@config/auth';
 
 interface Request {
   email: string;

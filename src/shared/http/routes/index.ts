@@ -1,10 +1,10 @@
 import { Router } from 'express';
 
-import feedRouter from '../../../modules/feed/http/routes';
-import usersRouter from '../../../modules/users/http/routes';
-import postsRouter from '../../../modules/posts/http/routes';
-import profileRouter from '../../../modules/users/http/routes/profile.routes';
-import sessionsRouter from '../../../modules/users/http/routes/sessions.routes';
+import feedRouter from '@modules/feed/http/routes';
+import usersRouter from '@modules/users/http/routes';
+import postsRouter from '@modules/posts/http/routes';
+import profileRouter from '@modules/users/http/routes/profile.routes';
+import sessionsRouter from '@modules/users/http/routes/sessions.routes';
 
 const routes = Router();
 

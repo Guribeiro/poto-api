@@ -1,8 +1,11 @@
 import { injectable, inject } from 'tsyringe';
 import { Users } from '@prisma/client';
-import IUsersRepository from '../../../infra/repositories/IUsersRepository';
-import IStorageProvider from '../../../../../shared/container/providers/StorageProvider/models/IStorageProvider';
-import { exclude } from '../../../../../shared/prisma';
+
+import IUsersRepository from '@modules/users/infra/repositories/IUsersRepository';
+
+import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvider';
+import { exclude } from '@shared/prisma';
+
 interface IRequest {
   user_id: string;
   avatar: string;

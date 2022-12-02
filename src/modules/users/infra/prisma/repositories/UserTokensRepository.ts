@@ -1,8 +1,8 @@
 import { PrismaClient, UserTokens } from '@prisma/client';
-import prisma from '../../../../../shared/prisma';
+import prisma from '@shared/prisma';
 
-import IUserTokensRepository from '../../repositories/IUserTokensRepository';
-import ICreateUserTokenDTO from '../../../dtos/ICreateUserTokenDTO';
+import IUserTokensRepository from '@modules/users/infra/repositories/IUserTokensRepository';
+import ICreateUserTokenDTO from '@modules/users/dtos/ICreateUserTokenDTO';
 
 class UserTokensRepository implements IUserTokensRepository {
   private readonly repository: PrismaClient;
