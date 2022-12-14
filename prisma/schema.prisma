@@ -12,16 +12,16 @@ model Users {
   full_name  String
   email      String       @unique
   password   String
-  username   String?
   created_at DateTime     @default(now())
   updated_at DateTime     @default(now())
   address_id String?
   avatar     String?
+  username   String?
   address    Addresses?   @relation(fields: [address_id], references: [id])
-  userTokens UserTokens[]
-  posts      Posts[]
-  likes      Likes[]
   comments   Comments[]
+  likes      Likes[]
+  posts      Posts[]
+  userTokens UserTokens[]
 
   @@map("users")
 }
@@ -48,23 +48,23 @@ model UserTokens {
   user_id       String
   expires_date  DateTime
   created_at    DateTime @default(now())
-  user          Users    @relation(fields: [user_id], references: [id])
+  user          Users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@map("user_tokens")
 }
 
 model Posts {
-  id         String   @id @default(uuid())
+  id         String     @id @default(uuid())
   user_id    String
-  user       Users    @relation(fields: [user_id], references: [id])
   subtitle   String?
   photo      String
+  created_at DateTime   @default(now())
+  updated_at DateTime   @default(now())
   latitude   Float?
   longitude  Float?
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
-  likes      Likes[]
+  user       Users      @relation(fields: [user_id], references: [id], onDelete: Cascade)
   comments   Comments[]
+  likes      Likes[]
 
   @@map("posts")
 }
@@ -72,20 +72,28 @@ model Posts {
 model Likes {
   id         String   @id @default(uuid())
   user_id    String
-  user       Users    @relation(fields: [user_id], references: [id])
   post_id    String
-  post       Posts    @relation(fields: [post_id], references: [id])
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
+  post       Posts    @relation(fields: [post_id], references: [id], onDelete: Cascade)
+  user       Users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 model Comments {
   id         String   @id @default(uuid())
   content    String
   user_id    String
-  user       Users    @relation(fields: [user_id], references: [id])
   post_id    String
-  post       Posts    @relation(fields: [post_id], references: [id])
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
+  post       Posts    @relation(fields: [post_id], references: [id], onDelete: Cascade)
+  user       Users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+model spatial_ref_sys {
+  srid      Int     @id
+  auth_name String? @db.VarChar(256)
+  auth_srid Int?
+  srtext    String? @db.VarChar(2048)
+  proj4text String? @db.VarChar(2048)
 }
