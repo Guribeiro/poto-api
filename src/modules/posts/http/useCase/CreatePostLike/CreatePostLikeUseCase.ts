@@ -50,19 +50,15 @@ class CreatePostLikeUseCase {
         post_id,
       );
 
-      const postCommentsCount = postComments.length;
-
       const postLikes = await this.postLikesRepository.findManyByPostId(
         post.id,
       );
 
-      const postLikesCount = postLikes.length;
-
       Object.assign(post, {
         likes: postLikes,
-        _likesCount: postLikesCount,
+        _likes_count: postLikes.length,
         comments: postComments,
-        _commentsCount: postCommentsCount,
+        _comments_count: postComments.length,
       });
 
       return post;
@@ -73,21 +69,17 @@ class CreatePostLikeUseCase {
       post_id,
     });
 
-    const postComments = await this.postCommentsRepository.findManyByPostId(
+    const comments = await this.postCommentsRepository.findManyByPostId(
       post_id,
     );
 
-    const postCommentsCount = postComments.length;
-
-    const postLikes = await this.postLikesRepository.findManyByPostId(post.id);
-
-    const postLikesCount = postLikes.length;
+    const likes = await this.postLikesRepository.findManyByPostId(post.id);
 
     Object.assign(post, {
-      likes: postLikes,
-      _likesCount: postLikesCount,
-      comments: postComments,
-      _commentsCount: postCommentsCount,
+      likes,
+      _likes_count: likes.length,
+      comments,
+      _comments_count: comments.length,
     });
 
     return post;

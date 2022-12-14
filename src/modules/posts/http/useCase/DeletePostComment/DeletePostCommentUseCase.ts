@@ -68,15 +68,12 @@ class DeletePostCommentUseCase {
     const comments = await this.postCommentsRepository.findManyByPostId(
       post.id,
     );
-    const postLikes = await this.postLikesRepository.findManyByPostId(post.id);
-
-    const _commentsCount = comments.length;
-    const _likesCount = postLikes.length;
+    const likes = await this.postLikesRepository.findManyByPostId(post.id);
 
     Object.assign(post, {
-      _likesCount,
-      _commentsCount,
-      likes: postLikes,
+      _likes_count: likes.length,
+      _comments_comments: comments.length,
+      likes,
       comments,
     });
 
