@@ -20,6 +20,12 @@ import UsersRepository from '@modules/users/infra/prisma/repositories/UsersRepos
 import IPostCommentsRepository from '@modules/posts/infra/repositories/IPostCommentsRepository';
 import PostCommentsRepository from '@modules/posts/infra/prisma/repositories/PostCommentsRepository';
 
+import IFriendshipRequestRepository from '@modules/friendships/infra/repositories/IFriendshipRequestRepository';
+import FriendshipRequestRepository from '@modules/friendships/infra/prisma/repositories/FriendshipRequestRepository';
+
+import IFriendshipRepository from '@modules/friendships/infra/repositories/IFriendshipRepository';
+import FriendshipRepository from '@modules/friendships/infra/prisma/repositories/FriendshipRepository';
+
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
   UsersRepository,
@@ -43,6 +49,16 @@ container.registerSingleton<IPostLikesRepository>(
 container.registerSingleton<IPostCommentsRepository>(
   'PostCommentsRepository',
   PostCommentsRepository,
+);
+
+container.registerSingleton<IFriendshipRequestRepository>(
+  'FriendshipRequestRepository',
+  FriendshipRequestRepository,
+);
+
+container.registerSingleton<IFriendshipRepository>(
+  'FriendshipRepository',
+  FriendshipRepository,
 );
 
 container.registerSingleton<IFeedRepository>('FeedRepository', FeedRepository);

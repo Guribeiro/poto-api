@@ -8,20 +8,24 @@ datasource db {
 }
 
 model Users {
-  id         String       @id @default(uuid())
-  full_name  String
-  email      String       @unique
-  password   String
-  created_at DateTime     @default(now())
-  updated_at DateTime     @default(now())
-  address_id String?
-  avatar     String?
-  username   String?
-  address    Addresses?   @relation(fields: [address_id], references: [id])
-  comments   Comments[]
-  likes      Likes[]
-  posts      Posts[]
-  userTokens UserTokens[]
+  id                              String              @id @default(uuid())
+  full_name                       String
+  email                           String              @unique
+  password                        String
+  created_at                      DateTime            @default(now())
+  updated_at                      DateTime            @default(now())
+  address_id                      String?
+  avatar                          String?
+  username                        String?
+  address                         Addresses?          @relation(fields: [address_id], references: [id])
+  comments                        Comments[]
+  likes                           Likes[]
+  posts                           Posts[]
+  userTokens                      UserTokens[]
+  UserFriendship                  Friendship[]        @relation(name: "UserFriendship")
+  FriendFrienship                 Friendship[]        @relation(name: "FriendFrienship")
+  RequesteeFriendshipRequest      FriendshipRequest[] @relation(name: "RequesteeFriendshipRequest")
+  RequestedFriendFrienshipRequest FriendshipRequest[] @relation(name: "RequestedFriendFrienshipRequest")
 
   @@map("users")
 }
@@ -96,4 +100,23 @@ model spatial_ref_sys {
   auth_srid Int?
   srtext    String? @db.VarChar(2048)
   proj4text String? @db.VarChar(2048)
+}
+
+model Friendship {
+  id         String   @id @default(uuid())
+  user_id    String
+  friend_id  String
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+  user       Users    @relation(name: "UserFriendship", fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  friend     Users    @relation(name: "FriendFrienship", fields: [friend_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model FriendshipRequest {
+  id           String   @id @default(uuid())
+  requestee_id String
+  requested_id String
+  created_at   DateTime @default(now())
+  requestee    Users    @relation(name: "RequesteeFriendshipRequest", fields: [requestee_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  requested    Users    @relation(name: "RequestedFriendFrienshipRequest", fields: [requested_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }

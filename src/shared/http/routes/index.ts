@@ -5,9 +5,11 @@ import usersRouter from '@modules/users/http/routes';
 import postsRouter from '@modules/posts/http/routes';
 import profileRouter from '@modules/users/http/routes/profile.routes';
 import sessionsRouter from '@modules/users/http/routes/sessions.routes';
+import friendshipsRouter from '@modules/friendships/http/routes';
 
 const routes = Router();
 
+routes.use('/friendship', friendshipsRouter);
 routes.use('/sessions', sessionsRouter);
 routes.use('/profile', profileRouter);
 routes.use('/users', usersRouter);
