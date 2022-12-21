@@ -2,9 +2,9 @@ import { Comments } from '@prisma/client';
 
 import { injectable, inject } from 'tsyringe';
 
-import IUsersRepository from '@modules/users/infra/repositories/IUsersRepository';
-import IPostsRepository from '@modules/posts/infra/repositories/IPostsRepository';
-import IPostCommentsRepository from '@modules/posts/infra/repositories/IPostCommentsRepository';
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+import IPostsRepository from '@modules/posts/repositories/IPostsRepository';
+import IPostCommentsRepository from '@modules/posts/repositories/IPostCommentsRepository';
 
 interface Request {
   post_id: string;

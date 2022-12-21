@@ -1,5 +1,6 @@
 import { injectable, inject } from 'tsyringe';
-import IUsersRepository from '@modules/users/infra/repositories/IUsersRepository';
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+import AppError from '@shared/errors/AppError';
 
 interface Request {
   username: string;
@@ -18,7 +19,7 @@ class CheckUsernameAvailableUseCase {
     );
 
     if (findUserWithSameEmail) {
-      throw new Error('username is already been used');
+      throw new AppError('username is already been used');
     }
   }
 }

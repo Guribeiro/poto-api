@@ -1,5 +1,5 @@
 import { injectable, inject } from 'tsyringe';
-import IUsersRepository from '@modules/users/infra/repositories/IUsersRepository';
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import IFriendshipRequestRepository from '@modules/friendships/infra/repositories/IFriendshipRequestRepository';
 import { FriendshipRequest } from '@prisma/client';
 import AppError from '@shared/errors/AppError';

@@ -1,8 +1,8 @@
 import { inject, injectable } from 'tsyringe';
 import { Likes } from '@prisma/client';
 
-import IUsersRepository from '@modules/users/infra/repositories/IUsersRepository';
-import IPostLikesRepository from '@modules/posts/infra/repositories/IPostLikesRepository';
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+import IPostLikesRepository from '@modules/posts/repositories/IPostLikesRepository';
 
 interface Request {
   user_id: string;

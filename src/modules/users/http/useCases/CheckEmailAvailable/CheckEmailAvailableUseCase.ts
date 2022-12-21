@@ -1,5 +1,6 @@
+import AppError from '@shared/errors/AppError';
 import { injectable, inject } from 'tsyringe';
-import IUsersRepository from '@modules/users/infra/repositories/IUsersRepository';
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 
 interface Request {
   email: string;
@@ -18,7 +19,7 @@ class CheckEmailAvailableUseCase {
     );
 
     if (findUserWithSameEmail) {
-      throw new Error('email is already been used');
+      throw new AppError('email is already been used');
     }
   }
 }

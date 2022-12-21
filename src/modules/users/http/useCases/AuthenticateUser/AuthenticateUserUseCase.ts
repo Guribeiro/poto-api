@@ -2,8 +2,8 @@ import { injectable, inject } from 'tsyringe';
 import { Users } from '@prisma/client';
 import { addDays } from 'date-fns';
 
-import IUsersRepository from '@modules/users/infra/repositories/IUsersRepository';
-import IUserTokensRepository from '@modules/users/infra/repositories/IUserTokensRepository';
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+import IUserTokensRepository from '@modules/users/repositories/IUserTokensRepository';
 import IHashProvider from '@modules/users/infra/providers/HashProvider/models/IHashProvider';
 import IJsonWebTokenProvider from '@modules/users/infra/providers/JsonwebtokenProvider/models/IJsonWebTokenProvider';
 

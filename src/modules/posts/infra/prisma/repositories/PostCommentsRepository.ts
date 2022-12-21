@@ -4,7 +4,7 @@ import prisma from '@shared/prisma';
 import IPostCommentsRepository, {
   ICreatePostCommentDTO,
   IFindOneByPostIdAndUserIdDTO,
-} from '../../repositories/IPostCommentsRepository';
+} from '../../../repositories/IPostCommentsRepository';
 
 class PostCommentsRepository implements IPostCommentsRepository {
   private readonly repository: PrismaClient;

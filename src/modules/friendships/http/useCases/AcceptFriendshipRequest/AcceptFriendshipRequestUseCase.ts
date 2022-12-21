@@ -1,7 +1,7 @@
 import { injectable, inject } from 'tsyringe';
 
 import IFriendshipRequestRepository from '@modules/friendships/infra/repositories/IFriendshipRequestRepository';
-import IUsersRepository from '@modules/users/infra/repositories/IUsersRepository';
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import AppError from '@shared/errors/AppError';
 import IFriendshipRepository from '@modules/friendships/infra/repositories/IFriendshipRepository';
 

@@ -3,8 +3,8 @@ import { injectable, inject } from 'tsyringe';
 import { addDays } from 'date-fns';
 import { verify } from 'jsonwebtoken';
 
-import IUsersRepository from '@modules/users/infra/repositories/IUsersRepository';
-import IUserTokensRepository from '@modules/users/infra/repositories/IUserTokensRepository';
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+import IUserTokensRepository from '@modules/users/repositories/IUserTokensRepository';
 import IJsonWebTokenProvider from '@modules/users/infra/providers/JsonwebtokenProvider/models/IJsonWebTokenProvider';
 
 import authConfig from '@config/auth';

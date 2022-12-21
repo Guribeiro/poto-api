@@ -1,7 +1,7 @@
 import { injectable, inject } from 'tsyringe';
 import { Friendship } from '@prisma/client';
 
-import IUsersRepository from '@modules/users/infra/repositories/IUsersRepository';
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import IFriendshipRepository from '@modules/friendships/infra/repositories/IFriendshipRepository';
 import AppError from '@shared/errors/AppError';
 

@@ -1,7 +1,7 @@
 import { PrismaClient, UserTokens } from '@prisma/client';
 import prisma from '@shared/prisma';
 
-import IUserTokensRepository from '@modules/users/infra/repositories/IUserTokensRepository';
+import IUserTokensRepository from '@modules/users/repositories/IUserTokensRepository';
 import ICreateUserTokenDTO from '@modules/users/dtos/ICreateUserTokenDTO';
 
 class UserTokensRepository implements IUserTokensRepository {

@@ -1,5 +1,5 @@
 import { UserTokens } from '@prisma/client';
-import ICreateUserTokenDTO from '../../dtos/ICreateUserTokenDTO';
+import ICreateUserTokenDTO from '../dtos/ICreateUserTokenDTO';
 
 export default interface IUserTokensRepository {
   create: (data: ICreateUserTokenDTO) => Promise<UserTokens>;

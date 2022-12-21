@@ -1,11 +1,12 @@
 import { injectable, inject } from 'tsyringe';
 
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
-import IUsersRepository from '@modules/users/infra/repositories/IUsersRepository';
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import IHashProvider from '@modules/users/infra/providers/HashProvider/models/IHashProvider';
 
 import { Users } from '@prisma/client';
 import { exclude } from '@shared/prisma';
+import AppError from '@shared/errors/AppError';
 
 interface Request extends ICreateUserDTO {}
 
@@ -31,7 +32,14 @@ class CreateUserUseCase {
     );
 
     if (findUserWithSameEmail) {
-      throw new Error('email has already been taken');
+      throw new AppError('esse email já está em uso');
+    }
+
+    const findUserWithSameUsername =
+      await this.usersRepository.findOneByUsername(username);
+
+    if (findUserWithSameUsername) {
+      throw new AppError('esse username já está em uso');
     }
 
     const hashedPassword = await this.hashProvider.generateHash(password);

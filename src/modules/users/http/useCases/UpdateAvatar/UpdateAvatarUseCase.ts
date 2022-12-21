@@ -1,10 +1,11 @@
 import { injectable, inject } from 'tsyringe';
 import { Users } from '@prisma/client';
 
-import IUsersRepository from '@modules/users/infra/repositories/IUsersRepository';
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 
 import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvider';
 import { exclude } from '@shared/prisma';
+import AppError from '@shared/errors/AppError';
 
 interface IRequest {
   user_id: string;
@@ -27,7 +28,7 @@ class UpdateAvatarUseCase {
   }: IRequest): Promise<Omit<Users, 'password'>> {
     const user = await this.usersRepository.findOneById(user_id);
 
-    if (!user) throw new Error('user could not be found');
+    if (!user) throw new AppError('user could not be found');
 
     if (user.avatar) {
       await this.storageProvider.deleteFile(user.avatar, 'avatars');

@@ -1,10 +1,11 @@
 import { Users } from '@prisma/client';
 import { injectable, inject } from 'tsyringe';
 
-import IUsersRepository from '@modules/users/infra/repositories/IUsersRepository';
-import IPostsRepository from '@modules/posts/infra/repositories/IPostsRepository';
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+import IPostsRepository from '@modules/posts/repositories/IPostsRepository';
 
 import { exclude } from '@shared/prisma';
+import AppError from '@shared/errors/AppError';
 
 interface IRequest {
   user_id: string;
@@ -27,11 +28,11 @@ class ShowUserUseCase {
   }: IRequest): Promise<Omit<Users, 'password'>> {
     const user = await this.usersRepository.findOneById(user_id);
 
-    if (!user) throw new Error('user could not be found');
+    if (!user) throw new AppError('usuário não encontrado');
 
     const userProfile = await this.usersRepository.findOneById(user_profile_id);
 
-    if (!userProfile) throw new Error('user could not be found');
+    if (!userProfile) throw new AppError('usuário não encontrado');
 
     const userProfilePosts = await this.postsRepository.findManyByUserId(
       user_profile_id,

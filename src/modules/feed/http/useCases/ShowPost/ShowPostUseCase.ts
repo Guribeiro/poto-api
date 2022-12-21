@@ -1,9 +1,9 @@
 import { Posts } from '@prisma/client';
 import { injectable, inject } from 'tsyringe';
-import IUsersRepository from '@modules/users/infra/repositories/IUsersRepository';
-import IPostsRepository from '@modules/posts/infra/repositories/IPostsRepository';
-import IPostLikesRepository from '@modules/posts/infra/repositories/IPostLikesRepository';
-import IPostCommentsRepository from '@modules/posts/infra/repositories/IPostCommentsRepository';
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+import IPostsRepository from '@modules/posts/repositories/IPostsRepository';
+import IPostLikesRepository from '@modules/posts/repositories/IPostLikesRepository';
+import IPostCommentsRepository from '@modules/posts/repositories/IPostCommentsRepository';
 
 interface Request {
   user_id: string;

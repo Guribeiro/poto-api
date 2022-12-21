@@ -1,10 +1,10 @@
 import { Posts } from '@prisma/client';
 import { injectable, inject } from 'tsyringe';
 
-import IUsersRepository from '@modules/users/infra/repositories/IUsersRepository';
-import IPostCommentsRepository from '@modules/posts/infra/repositories/IPostCommentsRepository';
-import IPostLikesRepository from '@modules/posts/infra/repositories/IPostLikesRepository';
-import IPostsRepository from '@modules/posts/infra/repositories/IPostsRepository';
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+import IPostCommentsRepository from '@modules/posts/repositories/IPostCommentsRepository';
+import IPostLikesRepository from '@modules/posts/repositories/IPostLikesRepository';
+import IPostsRepository from '@modules/posts/repositories/IPostsRepository';
 
 @injectable()
 class ListPostsUseCase {

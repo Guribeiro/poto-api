@@ -1,7 +1,8 @@
 import { Users } from '@prisma/client';
 import { injectable, inject } from 'tsyringe';
 import { exclude } from '@shared/prisma';
-import IUsersRepository from '@modules/users/infra/repositories/IUsersRepository';
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+import AppError from '@shared/errors/AppError';
 
 interface Request {
   user_id: string;
@@ -22,13 +23,13 @@ class UpdateEmailUseCase {
     const user = await this.usersRepository.findOneById(user_id);
 
     if (!user) {
-      throw new Error('user could not be found');
+      throw new AppError('usuário não encontrado');
     }
 
     const userWithSameEmail = await this.usersRepository.findOneByEmail(email);
 
     if (userWithSameEmail && userWithSameEmail.id !== user_id) {
-      throw new Error('email has already been taken by another user');
+      throw new AppError('email já em uso por outro usuário');
     }
 
     user.email = email;

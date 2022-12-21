@@ -2,7 +2,7 @@ import { PrismaClient, Likes } from '@prisma/client';
 import prisma from '@shared/prisma';
 import ILikesRepository, {
   ICreateLikeDTO,
-} from '../../repositories/IPostLikesRepository';
+} from '../../../repositories/IPostLikesRepository';
 
 class LikesRepository implements ILikesRepository {
   private readonly repository: PrismaClient;

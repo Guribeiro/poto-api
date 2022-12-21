@@ -2,9 +2,9 @@ import { injectable, inject } from 'tsyringe';
 import { Posts } from '@prisma/client';
 
 import IFeedRepository from '@modules/feed/infra/repositories/IFeedRepository';
-import IUsersRepository from '@modules/users/infra/repositories/IUsersRepository';
-import IPostLikesRepository from '@modules/posts/infra/repositories/IPostLikesRepository';
-import IPostCommentsRepository from '@modules/posts/infra/repositories/IPostCommentsRepository';
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+import IPostLikesRepository from '@modules/posts/repositories/IPostLikesRepository';
+import IPostCommentsRepository from '@modules/posts/repositories/IPostCommentsRepository';
 
 import AppError from '@shared/errors/AppError';
 import { exclude } from '@shared/prisma';

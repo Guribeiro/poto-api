@@ -1,5 +1,5 @@
 import { Users } from '@prisma/client';
-import ICreateUserDTO from '../../dtos/ICreateUserDTO';
+import ICreateUserDTO from '../dtos/ICreateUserDTO';
 
 export default interface IUsersRepository {
   create: (data: ICreateUserDTO) => Promise<Users>;

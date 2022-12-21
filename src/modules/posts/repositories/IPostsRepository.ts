@@ -1,5 +1,5 @@
 import { Posts } from '@prisma/client';
-import ICreatePostDTO from '../../dtos/ICreatePostDTO';
+import ICreatePostDTO from '../dtos/ICreatePostDTO';
 
 export interface IAllDTO {
   page: number;

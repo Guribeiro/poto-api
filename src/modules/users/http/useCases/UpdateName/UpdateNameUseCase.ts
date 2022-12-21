@@ -1,8 +1,9 @@
 import { Users } from '@prisma/client';
 import { injectable, inject } from 'tsyringe';
 
-import IUsersRepository from '@modules/users/infra/repositories/IUsersRepository';
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import { exclude } from '@shared/prisma';
+import AppError from '@shared/errors/AppError';
 
 interface Request {
   user_id: string;
@@ -23,7 +24,7 @@ class UpdateNameUseCase {
     const user = await this.usersRepository.findOneById(user_id);
 
     if (!user) {
-      throw new Error('user could not be found');
+      throw new AppError('user could not be found');
     }
 
     user.full_name = name;
