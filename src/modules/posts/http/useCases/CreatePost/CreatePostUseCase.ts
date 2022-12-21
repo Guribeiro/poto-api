@@ -3,6 +3,7 @@ import { injectable, inject } from 'tsyringe';
 
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import IPostsRepository from '@modules/posts/repositories/IPostsRepository';
+import AppError from '@shared/errors/AppError';
 
 interface Request {
   user_id: string;
@@ -32,7 +33,7 @@ class CreatePostUseCase {
     const user = await this.usersRepository.findOneById(user_id);
 
     if (!user) {
-      throw new Error('user could not be found');
+      throw new AppError('user could not be found');
     }
 
     const post = await this.postsRepository.create({
