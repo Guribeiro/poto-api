@@ -1,7 +1,10 @@
 import { PrismaClient, Posts } from '@prisma/client';
 import prisma from '@shared/prisma';
 import ICreatePostDTO from '@modules/posts/dtos/ICreatePostDTO';
-import IPostsRepository, { IAllDTO } from '../../../repositories/IPostsRepository';
+import IPostsRepository, {
+  IAllDTO,
+  IListFeedDTO,
+} from '../../../repositories/IPostsRepository';
 
 class PostsRepository implements IPostsRepository {
   private readonly repository: PrismaClient;
@@ -77,6 +80,17 @@ class PostsRepository implements IPostsRepository {
         user: true,
       },
     });
+  }
+
+  public async listPostsByUserAndCoordinates({
+    latitude,
+    longitude,
+    radius,
+  }: IListFeedDTO): Promise<Posts[]> {
+    const posts: Posts[] = await this.repository
+      .$queryRaw`SELECT * FROM "posts" WHERE ST_DWithin(ST_MakePoint(longitude, latitude), ST_MakePoint(${longitude}, ${latitude})::geography, ${radius} * 1000)`;
+
+    return posts;
   }
 }
 

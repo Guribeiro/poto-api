@@ -6,6 +6,8 @@ import AuthenticateUserUseCase from '../AuthenticateUser/AuthenticateUserUseCase
 
 import authConfig from '@config/auth';
 import FakeHashProvider from '@modules/users/infra/providers/HashProvider/fakes/FakeHashProvider';
+import { addDays } from 'date-fns';
+import AppError from '@shared/errors/AppError';
 
 let fakeUsersRepository: FakeUsersRepository;
 let fakeUserTokensRepository: FakeUserTokensRepository;
@@ -46,13 +48,33 @@ describe('refresh authentication token', () => {
       password: 'password',
     });
 
-    const { refresh_token } = await authenticateUserUseCase.execute({
-      email: user.email,
-      password: user.password,
+    const { expires_in_refresh_token, secret_refresh_token } = refresh_token;
+
+    const fake_refresh_token = fakeJsonWebTokenProvider.sign({
+      payload: {},
+      secret: secret_refresh_token,
+      options: {
+        subject: user.id,
+        expiresIn: expires_in_refresh_token,
+      },
     });
 
+    const refresh_token_expires_date = addDays(new Date(), 30);
+
+    await fakeUserTokensRepository.create({
+      user_id: user.id,
+      refresh_token: fake_refresh_token,
+      expires_date: refresh_token_expires_date,
+    });
+
+    const { refresh_token: created_refresh_token } =
+      await authenticateUserUseCase.execute({
+        email: user.email,
+        password: user.password,
+      });
+
     const response = await refreshTokenUserCase.execute({
-      token: refresh_token,
+      token: created_refresh_token,
     });
 
     expect(response).toHaveProperty('refresh_token');

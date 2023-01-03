@@ -55,8 +55,6 @@ class CreateFriendshipRequestUseCase {
         friend_id: requested_id,
       });
 
-    console.log({ friendshipAlreadyExists });
-
     if (friendshipAlreadyExists) {
       throw new AppError('você já é amigo deste usuário');
     }

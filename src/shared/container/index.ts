@@ -5,9 +5,6 @@ import './providers';
 import IPostLikesRepository from '@modules/posts/repositories/IPostLikesRepository';
 import PostLikesRepository from '@modules/posts/infra/prisma/repositories/PostLikesRepository';
 
-import IFeedRepository from '@modules/feed/infra/repositories/IFeedRepository';
-import FeedRepository from '@modules/feed/infra/prisma/FeedRepository';
-
 import IPostsRepository from '@modules/posts/repositories/IPostsRepository';
 import PostsRepository from '@modules/posts/infra/prisma/repositories/PostsRepository';
 
@@ -60,5 +57,3 @@ container.registerSingleton<IFriendshipRepository>(
   'FriendshipRepository',
   FriendshipRepository,
 );
-
-container.registerSingleton<IFeedRepository>('FeedRepository', FeedRepository);

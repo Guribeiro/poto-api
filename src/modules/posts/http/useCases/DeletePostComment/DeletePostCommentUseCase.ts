@@ -1,10 +1,15 @@
 import { injectable, inject } from 'tsyringe';
 import { Posts } from '@prisma/client';
 
+import AppError from '@shared/errors/AppError';
+
+import { Complement } from '@modules/posts/types';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import IPostCommentsRepository from '@modules/posts/repositories/IPostCommentsRepository';
 import IPostLikesRepository from '@modules/posts/repositories/IPostLikesRepository';
 import IPostsRepository from '@modules/posts/repositories/IPostsRepository';
+
+interface DeletePostCommentUseCaseResponse extends Posts, Complement {}
 
 interface Request {
   user_id: string;
@@ -32,52 +37,44 @@ class DeletePostCommentUseCase {
     user_id,
     post_id,
     comment_id,
-  }: Request): Promise<Posts> {
-    let post: Posts | null;
-
+  }: Request): Promise<DeletePostCommentUseCaseResponse> {
     const user = await this.usersRepository.findOneById(user_id);
 
     if (!user) {
-      throw new Error('user could not be found');
+      throw new AppError('user could not be found');
     }
 
-    post = await this.postsRepository.findOneById(post_id);
+    const post = await this.postsRepository.findOneById(post_id);
 
     if (!post) {
-      throw new Error('post could not be found');
+      throw new AppError('post could not be found');
     }
 
     const comment = await this.postCommentsRepository.findOneById(comment_id);
 
     if (!comment) {
-      throw new Error('comment could not be found');
+      throw new AppError('comment could not be found');
     }
 
     if (comment.user_id !== user_id) {
-      throw new Error('you do not have permission to delete this comment');
+      throw new AppError('you do not have permission to delete this comment');
     }
 
     await this.postCommentsRepository.deleteOneById(comment_id);
-
-    post = await this.postsRepository.findOneById(post_id);
-
-    if (!post) {
-      throw new Error('post could not be found');
-    }
 
     const comments = await this.postCommentsRepository.findManyByPostId(
       post.id,
     );
     const likes = await this.postLikesRepository.findManyByPostId(post.id);
 
-    Object.assign(post, {
+    const updatedPost = Object.assign(post, {
       _likes_count: likes.length,
-      _comments_comments: comments.length,
+      _comments_count: comments.length,
       likes,
       comments,
     });
 
-    return post;
+    return updatedPost;
   }
 }
 

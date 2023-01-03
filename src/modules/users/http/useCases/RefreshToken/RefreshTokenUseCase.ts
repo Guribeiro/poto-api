@@ -1,8 +1,8 @@
 import { injectable, inject } from 'tsyringe';
 
 import { addDays } from 'date-fns';
-import { verify } from 'jsonwebtoken';
 
+import AppError from '@shared/errors/AppError';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import IUserTokensRepository from '@modules/users/repositories/IUserTokensRepository';
 import IJsonWebTokenProvider from '@modules/users/infra/providers/JsonwebtokenProvider/models/IJsonWebTokenProvider';
@@ -39,7 +39,10 @@ class RefreshTokenUserCase {
     const { secret_refresh_token, expires_in_refresh_token } =
       authConfig.refresh_token;
 
-    const decoded = verify(token, secret_refresh_token);
+    const decoded = this.jsonwebtokenProvider.verify(
+      token,
+      secret_refresh_token,
+    );
 
     const { sub } = decoded as unknown as IPayload;
 
@@ -48,7 +51,7 @@ class RefreshTokenUserCase {
     const user = await this.usersRepository.findOneById(user_id);
 
     if (!user) {
-      throw new Error('invalid refresh_token');
+      throw new AppError('invalid refresh_token');
     }
 
     const userToken = await this.userTokensRepository.findOneByUserIdAndToken(
@@ -57,7 +60,7 @@ class RefreshTokenUserCase {
     );
 
     if (!userToken) {
-      throw new Error('invalid refresh_token');
+      throw new AppError('invalid refresh_token');
     }
 
     await this.userTokensRepository.deleteById(userToken.id);

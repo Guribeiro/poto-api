@@ -1,6 +1,7 @@
 import { injectable, inject } from 'tsyringe';
 import { Posts } from '@prisma/client';
 
+import AppError from '@shared/errors/AppError';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import IPostsRepository from '@modules/posts/repositories/IPostsRepository';
 
@@ -24,7 +25,7 @@ class ListFeedPostsUseCase {
     const user = await this.usersRepository.findOneById(user_id);
 
     if (!user) {
-      throw new Error('user could not be found');
+      throw new AppError('user could not be found');
     }
 
     const posts = await this.postsRepository.all({

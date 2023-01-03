@@ -1,5 +1,7 @@
 import { Posts } from '@prisma/client';
 import { injectable, inject } from 'tsyringe';
+import AppError from '@shared/errors/AppError';
+
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import IPostsRepository from '@modules/posts/repositories/IPostsRepository';
 import IPostLikesRepository from '@modules/posts/repositories/IPostLikesRepository';
@@ -30,13 +32,13 @@ class ShowPostUseCase {
     const user = await this.usersRepository.findOneById(user_id);
 
     if (!user) {
-      throw new Error('user could not be found');
+      throw new AppError('user could not be found');
     }
 
     const post = await this.postsRepository.findOneById(post_id);
 
     if (!post) {
-      throw new Error('post could not be found');
+      throw new AppError('post could not be found');
     }
 
     const comments = await this.postCommentsRepository.findManyByPostId(

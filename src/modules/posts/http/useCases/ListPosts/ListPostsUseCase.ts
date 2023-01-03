@@ -6,6 +6,11 @@ import IPostCommentsRepository from '@modules/posts/repositories/IPostCommentsRe
 import IPostLikesRepository from '@modules/posts/repositories/IPostLikesRepository';
 import IPostsRepository from '@modules/posts/repositories/IPostsRepository';
 
+interface ListPostsUseCaseRequest {
+  page: number;
+  take: number;
+}
+
 @injectable()
 class ListPostsUseCase {
   constructor(
@@ -22,8 +27,11 @@ class ListPostsUseCase {
     private readonly postCommentsRepository: IPostCommentsRepository,
   ) {}
 
-  public async execute(): Promise<Posts[]> {
-    const posts = await this.postsRepository.all();
+  public async execute({
+    take,
+    page,
+  }: ListPostsUseCaseRequest): Promise<Posts[]> {
+    const posts = await this.postsRepository.all({ take, page });
 
     for await (const post of posts) {
       const comments = await this.postCommentsRepository.findManyByPostId(

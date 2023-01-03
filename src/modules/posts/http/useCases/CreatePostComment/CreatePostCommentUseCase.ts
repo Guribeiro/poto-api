@@ -1,10 +1,14 @@
-import { Posts } from '@prisma/client';
+import { Likes, Posts, Comments } from '@prisma/client';
 import { injectable, inject } from 'tsyringe';
+import AppError from '@shared/errors/AppError';
 
+import { Complement } from '@modules/posts/types';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import IPostsRepository from '@modules/posts/repositories/IPostsRepository';
 import IPostLikesRepository from '@modules/posts/repositories/IPostLikesRepository';
 import IPostCommentsRepository from '@modules/posts/repositories/IPostCommentsRepository';
+
+interface CreatePostCommentUseCaseResponse extends Posts, Complement {}
 
 interface Request {
   user_id: string;
@@ -28,17 +32,21 @@ class CreatePostCommentUseCase {
     private readonly postLikesRepository: IPostLikesRepository,
   ) {}
 
-  public async execute({ user_id, post_id, content }: Request): Promise<Posts> {
+  public async execute({
+    user_id,
+    post_id,
+    content,
+  }: Request): Promise<CreatePostCommentUseCaseResponse> {
     const user = await this.usersRepository.findOneById(user_id);
 
     if (!user) {
-      throw new Error('user could not be found');
+      throw new AppError('user could not be found');
     }
 
     const post = await this.postsRepository.findOneById(post_id);
 
     if (!post) {
-      throw new Error('post could not be found');
+      throw new AppError('post could not be found');
     }
 
     await this.postCommentsRepository.create({
@@ -53,14 +61,14 @@ class CreatePostCommentUseCase {
 
     const likes = await this.postLikesRepository.findManyByPostId(post.id);
 
-    Object.assign(post, {
+    const postUpdated = Object.assign<Posts, Complement>(post, {
       _likes_count: likes.length,
       _comments_count: comments.length,
       likes,
       comments,
     });
 
-    return post;
+    return postUpdated;
   }
 }
 

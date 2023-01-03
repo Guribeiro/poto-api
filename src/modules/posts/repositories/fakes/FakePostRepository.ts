@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import ICreatePostDTO from '@modules/posts/dtos/ICreatePostDTO';
 import { Posts } from '@prisma/client';
-import IPostsRepository, { IAllDTO } from '../IPostsRepository';
+import IPostsRepository, { IAllDTO, IListFeedDTO } from '../IPostsRepository';
 
 class FakePostRepository implements IPostsRepository {
   private readonly posts: Posts[] = [];
@@ -37,8 +37,14 @@ class FakePostRepository implements IPostsRepository {
     return this.posts.filter(post => post.user_id === user_id);
   }
 
-  async findOneById(post_id: string): Promise<Posts | null> {
+  public async findOneById(post_id: string): Promise<Posts | null> {
     return this.posts.find(post => post.id === post_id) ?? null;
+  }
+
+  public async listPostsByUserAndCoordinates(
+    data: IListFeedDTO,
+  ): Promise<Posts[]> {
+    return this.posts;
   }
 }
 

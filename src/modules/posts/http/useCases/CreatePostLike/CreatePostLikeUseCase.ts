@@ -1,10 +1,20 @@
-import { Posts } from '@prisma/client';
+import { Comments, Likes, Posts } from '@prisma/client';
 import { inject, injectable } from 'tsyringe';
 
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import IPostCommentsRepository from '@modules/posts/repositories/IPostCommentsRepository';
 import IPostLikesRepository from '@modules/posts/repositories/IPostLikesRepository';
 import IPostsRepository from '@modules/posts/repositories/IPostsRepository';
+import AppError from '@shared/errors/AppError';
+
+interface Complement {
+  _likes_count: number;
+  _comments_count: number;
+  likes: Likes[];
+  comments: Comments[];
+}
+
+interface CreatePostLikeUseCaseResponse extends Posts, Complement {}
 
 interface Request {
   user_id: string;
@@ -27,41 +37,44 @@ class CreatePostLikeUseCase {
     private readonly postCommentsRepository: IPostCommentsRepository,
   ) {}
 
-  public async execute({ user_id, post_id }: Request): Promise<Posts> {
+  public async execute({
+    user_id,
+    post_id,
+  }: Request): Promise<CreatePostLikeUseCaseResponse> {
     const user = await this.usersRepository.findOneById(user_id);
 
     if (!user) {
-      throw new Error('user does not exist');
+      throw new AppError('user does not exist');
     }
 
     const post = await this.postsRepository.findOneById(post_id);
 
     if (!post) {
-      throw new Error('post does not exist');
+      throw new AppError('post does not exist');
     }
 
-    const findPostLikeByUser =
-      await this.postLikesRepository.findOneByPostIdAndUserId(post_id, user_id);
+    const findLike = await this.postLikesRepository.findOneByPostIdAndUserId(
+      post_id,
+      user_id,
+    );
 
-    if (findPostLikeByUser) {
-      await this.postLikesRepository.deleteById(findPostLikeByUser.id);
+    if (findLike) {
+      await this.postLikesRepository.deleteById(findLike.id);
 
-      const postComments = await this.postCommentsRepository.findManyByPostId(
+      const comments = await this.postCommentsRepository.findManyByPostId(
         post_id,
       );
 
-      const postLikes = await this.postLikesRepository.findManyByPostId(
-        post.id,
-      );
+      const likes = await this.postLikesRepository.findManyByPostId(post.id);
 
-      Object.assign(post, {
-        likes: postLikes,
-        _likes_count: postLikes.length,
-        comments: postComments,
-        _comments_count: postComments.length,
+      const postUpdated = Object.assign(post, {
+        likes,
+        _likes_count: likes.length,
+        comments,
+        _comments_count: comments.length,
       });
 
-      return post;
+      return postUpdated;
     }
 
     await this.postLikesRepository.create({
@@ -75,14 +88,14 @@ class CreatePostLikeUseCase {
 
     const likes = await this.postLikesRepository.findManyByPostId(post.id);
 
-    Object.assign(post, {
+    const postUpdated = Object.assign(post, {
       likes,
       _likes_count: likes.length,
       comments,
       _comments_count: comments.length,
     });
 
-    return post;
+    return postUpdated;
   }
 }
 

@@ -1,7 +1,7 @@
 import { injectable, inject } from 'tsyringe';
 import { Posts } from '@prisma/client';
 
-import IFeedRepository from '@modules/feed/infra/repositories/IFeedRepository';
+import IPostsRepository from '@modules/posts/repositories/IPostsRepository';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import IPostLikesRepository from '@modules/posts/repositories/IPostLikesRepository';
 import IPostCommentsRepository from '@modules/posts/repositories/IPostCommentsRepository';
@@ -22,8 +22,8 @@ class ListUserFeedUseCase {
     @inject('UsersRepository')
     private readonly usersRepository: IUsersRepository,
 
-    @inject('FeedRepository')
-    private readonly feedRepository: IFeedRepository,
+    @inject('PostsRepository')
+    private readonly postsRepository: IPostsRepository,
 
     @inject('PostLikesRepository')
     private readonly postLikesRepository: IPostLikesRepository,
@@ -44,7 +44,7 @@ class ListUserFeedUseCase {
       throw new AppError('user could not be found');
     }
 
-    const posts = await this.feedRepository.list({
+    const posts = await this.postsRepository.listPostsByUserAndCoordinates({
       latitude,
       longitude,
       radius,

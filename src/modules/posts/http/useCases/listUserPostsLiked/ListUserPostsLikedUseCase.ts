@@ -1,6 +1,8 @@
 import { inject, injectable } from 'tsyringe';
 import { Likes } from '@prisma/client';
 
+import AppError from '@shared/errors/AppError';
+
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import IPostLikesRepository from '@modules/posts/repositories/IPostLikesRepository';
 
@@ -22,7 +24,7 @@ class ListUserPostsLikedUseCase {
     const user = await this.usersRepository.findOneById(user_id);
 
     if (!user) {
-      throw new Error('user could not be found');
+      throw new AppError('user could not be found');
     }
 
     const likes = await this.postLikesRepository.findManyByUserId(user_id);

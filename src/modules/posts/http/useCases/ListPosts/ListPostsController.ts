@@ -4,16 +4,16 @@ import ListPostsUseCase from './ListPostsUseCase';
 
 class ListPostsController {
   public async handle(request: Request, response: Response): Promise<Response> {
-    try {
-      const listPosts = container.resolve(ListPostsUseCase);
+    const { page, per_page } = request.query;
 
-      const posts = await listPosts.execute();
+    const listPosts = container.resolve(ListPostsUseCase);
 
-      return response.status(200).json(posts);
-    } catch (error) {
-      const err = error as Error;
-      return response.status(400).json({ error: err.message });
-    }
+    const posts = await listPosts.execute({
+      page: Number(page) || 0,
+      take: Number(per_page) || 6,
+    });
+
+    return response.status(200).json(posts);
   }
 }
 
