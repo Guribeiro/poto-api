@@ -7,7 +7,7 @@ import IPostLikesRepository from '@modules/posts/repositories/IPostLikesReposito
 import IPostCommentsRepository from '@modules/posts/repositories/IPostCommentsRepository';
 
 import AppError from '@shared/errors/AppError';
-import { exclude } from '@shared/prisma';
+import { exclude } from '@shared/prisma/client';
 
 interface Request {
   user_id: string;

@@ -4,7 +4,7 @@ import { Users } from '@prisma/client';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 
 import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvider';
-import { exclude } from '@shared/prisma';
+import { exclude } from '@shared/prisma/client';
 import AppError from '@shared/errors/AppError';
 
 interface IRequest {

@@ -5,13 +5,13 @@ import uploadConfig from '@config/upload';
 
 import ensureAuthentication from '@modules/users/http/middlewares/ensureAuthenticate';
 
-import ListPostsController from '../useCase/ListPosts/ListPostsController';
-import CreatePostController from '../useCase/CreatePost/CreatePostController';
-import CreatePostLikeController from '../useCase/CreatePostLike/CreatePostLikeController';
-import CreatePostCommentController from '../useCase/CreatePostComment/CreatePostCommentController';
-import ListPostCommentsController from '../useCase/ListPostComments/ListPostCommentsController';
-import DeletePostCommentController from '../useCase/DeletePostComment/DeletePostCommentController';
-import ListUserPostsLikedController from '../useCase/listUserPostsLiked/ListUserPostsLikedController';
+import ListPostsController from '../useCases/ListPosts/ListPostsController';
+import CreatePostController from '../useCases/CreatePost/CreatePostController';
+import CreatePostLikeController from '../useCases/CreatePostLike/CreatePostLikeController';
+import CreatePostCommentController from '../useCases/CreatePostComment/CreatePostCommentController';
+import ListPostCommentsController from '../useCases/ListPostComments/ListPostCommentsController';
+import DeletePostCommentController from '../useCases/DeletePostComment/DeletePostCommentController';
+import ListUserPostsLikedController from '../useCases/ListUserPostsLiked/ListUserPostsLikedController';
 
 const postsRouter = Router();
 

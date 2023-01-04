@@ -2,7 +2,7 @@ import { Users } from '@prisma/client';
 import { injectable, inject } from 'tsyringe';
 
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
-import { exclude } from '@shared/prisma';
+import { exclude } from '@shared/prisma/client';
 import AppError from '@shared/errors/AppError';
 
 interface Request {

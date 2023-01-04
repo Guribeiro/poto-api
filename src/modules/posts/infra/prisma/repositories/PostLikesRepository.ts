@@ -1,5 +1,5 @@
 import { PrismaClient, Likes } from '@prisma/client';
-import prisma from '@shared/prisma';
+import prisma from '@shared/prisma/client';
 import ILikesRepository, {
   ICreateLikeDTO,
 } from '../../../repositories/IPostLikesRepository';

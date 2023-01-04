@@ -1,7 +1,7 @@
 import ICreateFriendshipDTO from '@modules/friendships/dtos/ICreateFriendshipDTO';
 import IFindOneByUserAndFriendDTO from '@modules/friendships/dtos/IFindOneByUserAndFriendDTO';
 import { Friendship, PrismaClient } from '@prisma/client';
-import prisma from '@shared/prisma';
+import prisma from '@shared/prisma/client';
 import IFriendshipRepository from '../../repositories/IFriendshipRepository';
 
 class FriendshipRepository implements IFriendshipRepository {

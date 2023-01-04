@@ -1,5 +1,5 @@
 import { PrismaClient, Posts } from '@prisma/client';
-import prisma from '@shared/prisma';
+import prisma from '@shared/prisma/client';
 import ICreatePostDTO from '@modules/posts/dtos/ICreatePostDTO';
 import IPostsRepository, {
   IAllDTO,

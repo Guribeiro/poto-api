@@ -5,7 +5,7 @@ import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import IHashProvider from '@modules/users/infra/providers/HashProvider/models/IHashProvider';
 
 import { Users } from '@prisma/client';
-import { exclude } from '@shared/prisma';
+import { exclude } from '@shared/prisma/client';
 import AppError from '@shared/errors/AppError';
 
 interface Request extends ICreateUserDTO {}

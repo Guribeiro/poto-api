@@ -8,7 +8,7 @@ import IHashProvider from '@modules/users/infra/providers/HashProvider/models/IH
 import IJsonWebTokenProvider from '@modules/users/infra/providers/JsonwebtokenProvider/models/IJsonWebTokenProvider';
 
 import AppError from '@shared/errors/AppError';
-import { exclude } from '@shared/prisma';
+import { exclude } from '@shared/prisma/client';
 import authConfig from '@config/auth';
 
 interface Request {

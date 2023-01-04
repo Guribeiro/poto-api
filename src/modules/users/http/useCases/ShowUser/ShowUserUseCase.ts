@@ -4,7 +4,7 @@ import { injectable, inject } from 'tsyringe';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import IPostsRepository from '@modules/posts/repositories/IPostsRepository';
 
-import { exclude } from '@shared/prisma';
+import { exclude } from '@shared/prisma/client';
 import AppError from '@shared/errors/AppError';
 
 interface IRequest {

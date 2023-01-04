@@ -1,5 +1,5 @@
 import { PrismaClient, UserTokens } from '@prisma/client';
-import prisma from '@shared/prisma';
+import prisma from '@shared/prisma/client';
 
 import IUserTokensRepository from '@modules/users/repositories/IUserTokensRepository';
 import ICreateUserTokenDTO from '@modules/users/dtos/ICreateUserTokenDTO';

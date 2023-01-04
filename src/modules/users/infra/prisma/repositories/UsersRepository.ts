@@ -3,7 +3,7 @@ import { PrismaClient, Users } from '@prisma/client';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
 
-import prisma from '@shared/prisma';
+import prisma from '@shared/prisma/client';
 
 class UsersRepository implements IUsersRepository {
   private readonly repository: PrismaClient;

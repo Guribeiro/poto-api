@@ -1,5 +1,5 @@
 import { FriendshipRequest, PrismaClient } from '@prisma/client';
-import prisma from '@shared/prisma';
+import prisma from '@shared/prisma/client';
 
 import ICreateFriendshipRequestDTO from '@modules/friendships/dtos/ICreateFriendshipRequestDTO';
 import IFindOneByRequesteeAndRequestedIdsDTO from '@modules/friendships/dtos/IFindOneByRequesteeAndRequestedIdsDTO';
