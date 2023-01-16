@@ -2,8 +2,11 @@ import { PrismaClient, Posts } from '@prisma/client';
 import prisma from '@shared/prisma/client';
 import ICreatePostDTO from '@modules/posts/dtos/ICreatePostDTO';
 import IPostsRepository, {
-  IAllDTO,
-  IListFeedDTO,
+  Pagination,
+  Coordinates,
+  IFindOneByUserAndIntervalDateDTO,
+  IFindManyByIntervalDateDTO,
+  IFindManyByIntervalDateAndCoordinates,
 } from '../../../repositories/IPostsRepository';
 
 class PostsRepository implements IPostsRepository {
@@ -36,7 +39,7 @@ class PostsRepository implements IPostsRepository {
     return post;
   }
 
-  public async all({ page, take }: IAllDTO): Promise<Posts[]> {
+  public async all({ page, take }: Pagination): Promise<Posts[]> {
     return await this.repository.posts.findMany({
       skip: page * take,
       take,
@@ -86,9 +89,84 @@ class PostsRepository implements IPostsRepository {
     latitude,
     longitude,
     radius,
-  }: IListFeedDTO): Promise<Posts[]> {
-    const posts: Posts[] = await this.repository
-      .$queryRaw`SELECT * FROM "posts" WHERE ST_DWithin(ST_MakePoint(longitude, latitude), ST_MakePoint(${longitude}, ${latitude})::geography, ${radius} * 1000)`;
+  }: Coordinates): Promise<Posts[]> {
+    const posts: Posts[] = await this.repository.$queryRaw`
+    SELECT * FROM "posts"
+      WHERE ST_DWithin(
+        ST_MakePoint(longitude, latitude),
+        ST_MakePoint(${longitude}, ${latitude})::geography, ${radius} * 1000
+      )`;
+
+    return posts;
+  }
+
+  public async findOneByUserAndIntervalDate({
+    user_id,
+    interval,
+  }: IFindOneByUserAndIntervalDateDTO): Promise<Posts | null> {
+    return await this.repository.posts.findFirst({
+      where: {
+        user_id,
+        created_at: {
+          gt: interval.start,
+        },
+        AND: {
+          created_at: {
+            lt: interval.end,
+          },
+        },
+      },
+    });
+  }
+
+  public async findManyByIntervalDate({
+    interval: { start, end },
+    pagination: { page, take },
+  }: IFindManyByIntervalDateDTO): Promise<Posts[]> {
+    return await this.repository.posts.findMany({
+      where: {
+        created_at: {
+          gt: start,
+        },
+        AND: {
+          created_at: {
+            lt: end,
+          },
+        },
+      },
+      skip: page * take,
+      take,
+      include: {
+        user: true,
+        likes: {
+          include: {
+            user: true,
+          },
+        },
+        comments: {
+          include: {
+            user: true,
+          },
+        },
+      },
+      orderBy: {
+        created_at: 'desc',
+      },
+    });
+  }
+
+  public async findManyByIntervalDateAndCoordinates({
+    interval: { end, start },
+    coordinates: { latitude, longitude, radius },
+  }: IFindManyByIntervalDateAndCoordinates): Promise<Posts[]> {
+    const posts: Posts[] = await this.repository.$queryRaw`
+      SELECT * FROM "posts" WHERE
+        ST_DWithin(
+          ST_MakePoint(longitude, latitude),
+          ST_MakePoint(${longitude}, ${latitude})::geography, ${radius} * 1000)
+        AND created_at BETWEEN ${start} AND ${end}
+        ORDER BY created_at DESC
+        `;
 
     return posts;
   }

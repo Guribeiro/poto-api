@@ -12,9 +12,8 @@ const listFeedPostsController = new ListFeedPostsController();
 const listUserFeedController = new ListUserFeedController();
 const showPostController = new ShowPostController();
 
-feedRouter.get('/posts', ensureAuthentication, listFeedPostsController.handle);
+feedRouter.get('/', ensureAuthentication, listFeedPostsController.handle);
 
-feedRouter.get('/', ensureAuthentication, listUserFeedController.handle);
 feedRouter.get(
   '/posts/:post_id',
   ensureAuthentication,

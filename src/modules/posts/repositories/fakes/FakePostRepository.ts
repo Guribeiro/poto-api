@@ -1,7 +1,13 @@
 import { randomUUID } from 'node:crypto';
 import ICreatePostDTO from '@modules/posts/dtos/ICreatePostDTO';
 import { Posts } from '@prisma/client';
-import IPostsRepository, { IAllDTO, IListFeedDTO } from '../IPostsRepository';
+import IPostsRepository, {
+  Pagination,
+  Coordinates,
+  IFindOneByUserAndIntervalDateDTO,
+  IFindManyByIntervalDateDTO,
+  IFindManyByIntervalDateAndCoordinates,
+} from '../IPostsRepository';
 
 class FakePostRepository implements IPostsRepository {
   private readonly posts: Posts[] = [];
@@ -29,7 +35,7 @@ class FakePostRepository implements IPostsRepository {
     return post;
   }
 
-  public async all(data: IAllDTO): Promise<Posts[]> {
+  public async all(data: Pagination): Promise<Posts[]> {
     return this.posts;
   }
 
@@ -42,9 +48,40 @@ class FakePostRepository implements IPostsRepository {
   }
 
   public async listPostsByUserAndCoordinates(
-    data: IListFeedDTO,
+    data: Coordinates,
   ): Promise<Posts[]> {
     return this.posts;
+  }
+
+  public async findOneByUserAndIntervalDate({
+    user_id,
+    interval,
+  }: IFindOneByUserAndIntervalDateDTO): Promise<Posts | null> {
+    return (
+      this.posts.find(
+        post =>
+          post.created_at > interval.start &&
+          post.created_at < interval.end &&
+          post.user_id === user_id,
+      ) ?? null
+    );
+  }
+
+  public async findManyByIntervalDate({
+    interval: { start, end },
+  }: IFindManyByIntervalDateDTO): Promise<Posts[]> {
+    return this.posts.filter(
+      post => post.created_at > start && post.created_at < end,
+    );
+  }
+
+  public async findManyByIntervalDateAndCoordinates({
+    coordinates,
+    interval: { start, end },
+  }: IFindManyByIntervalDateAndCoordinates): Promise<Posts[]> {
+    return this.posts.filter(
+      post => post.created_at > start && post.created_at < end,
+    );
   }
 }
 
