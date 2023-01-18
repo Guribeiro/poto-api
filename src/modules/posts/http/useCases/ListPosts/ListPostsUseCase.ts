@@ -1,6 +1,8 @@
 import { Posts } from '@prisma/client';
 import { injectable, inject } from 'tsyringe';
 
+import { PostMapper } from '../../mappers/PostMapper';
+
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import IPostCommentsRepository from '@modules/posts/repositories/IPostCommentsRepository';
 import IPostLikesRepository from '@modules/posts/repositories/IPostLikesRepository';
@@ -39,7 +41,9 @@ class ListPostsUseCase {
       );
       const likes = await this.postLikesRepository.findManyByPostId(post.id);
 
-      Object.assign(post, {
+      const postMapped = PostMapper.toDTO(post);
+
+      Object.assign(postMapped, {
         _likes_count: likes.length,
         _comments_count: likes.length,
         likes,

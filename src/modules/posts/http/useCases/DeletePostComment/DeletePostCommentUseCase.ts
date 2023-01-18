@@ -3,6 +3,8 @@ import { Posts } from '@prisma/client';
 
 import AppError from '@shared/errors/AppError';
 
+import { PostMapper } from '../../mappers/PostMapper';
+
 import { Complement } from '@modules/posts/types';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import IPostCommentsRepository from '@modules/posts/repositories/IPostCommentsRepository';
@@ -50,6 +52,8 @@ class DeletePostCommentUseCase {
       throw new AppError('post could not be found');
     }
 
+    const postMapped = PostMapper.toDTO(post);
+
     const comment = await this.postCommentsRepository.findOneById(comment_id);
 
     if (!comment) {
@@ -67,7 +71,7 @@ class DeletePostCommentUseCase {
     );
     const likes = await this.postLikesRepository.findManyByPostId(post.id);
 
-    const updatedPost = Object.assign(post, {
+    const updatedPost = Object.assign(postMapped, {
       _likes_count: likes.length,
       _comments_count: comments.length,
       likes,

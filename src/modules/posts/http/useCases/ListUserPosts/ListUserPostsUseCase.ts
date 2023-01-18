@@ -1,6 +1,8 @@
 import { Posts } from '@prisma/client';
 import { injectable, inject } from 'tsyringe';
 
+import { PostMapper } from '../../mappers/PostMapper';
+
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import IPostsRepository from '@modules/posts/repositories/IPostsRepository';
 
@@ -27,7 +29,9 @@ class ListUserPostsUseCase {
 
     const posts = await this.postsRepository.findManyByUserId(user_id);
 
-    return posts;
+    const postsMapped = posts.map(post => PostMapper.toDTO(post));
+
+    return postsMapped;
   }
 }
 

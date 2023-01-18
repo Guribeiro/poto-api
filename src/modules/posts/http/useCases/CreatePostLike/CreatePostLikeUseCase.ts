@@ -1,6 +1,8 @@
 import { Comments, Likes, Posts } from '@prisma/client';
 import { inject, injectable } from 'tsyringe';
 
+import { PostMapper } from '../../mappers/PostMapper';
+
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import IPostCommentsRepository from '@modules/posts/repositories/IPostCommentsRepository';
 import IPostLikesRepository from '@modules/posts/repositories/IPostLikesRepository';
@@ -53,6 +55,8 @@ class CreatePostLikeUseCase {
       throw new AppError('post does not exist');
     }
 
+    const postMapped = PostMapper.toDTO(post);
+
     const findLike = await this.postLikesRepository.findOneByPostIdAndUserId(
       post_id,
       user_id,
@@ -67,7 +71,7 @@ class CreatePostLikeUseCase {
 
       const likes = await this.postLikesRepository.findManyByPostId(post.id);
 
-      const postUpdated = Object.assign(post, {
+      const postUpdated = Object.assign(postMapped, {
         likes,
         _likes_count: likes.length,
         comments,
@@ -88,7 +92,7 @@ class CreatePostLikeUseCase {
 
     const likes = await this.postLikesRepository.findManyByPostId(post.id);
 
-    const postUpdated = Object.assign(post, {
+    const postUpdated = Object.assign(postMapped, {
       likes,
       _likes_count: likes.length,
       comments,

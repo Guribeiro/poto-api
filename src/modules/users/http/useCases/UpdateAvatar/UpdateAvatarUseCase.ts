@@ -4,7 +4,7 @@ import { Users } from '@prisma/client';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 
 import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvider';
-import { exclude } from '@shared/prisma/client';
+import { UserMapper } from '../../mappers/UserMapper';
 import AppError from '@shared/errors/AppError';
 
 interface IRequest {
@@ -40,9 +40,9 @@ class UpdateAvatarUseCase {
 
     await this.usersRepository.save(user);
 
-    const userWithoutPassword = exclude(user, 'password');
+    const userMapped = UserMapper.toDTO(user);
 
-    return userWithoutPassword;
+    return userMapped;
   }
 }
 

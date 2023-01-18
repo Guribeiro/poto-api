@@ -2,7 +2,7 @@ import { Users } from '@prisma/client';
 import { injectable, inject } from 'tsyringe';
 
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
-import { exclude } from '@shared/prisma/client';
+import { UserMapper } from '../../mappers/UserMapper';
 import AppError from '@shared/errors/AppError';
 
 interface Request {
@@ -31,9 +31,9 @@ class UpdateNameUseCase {
 
     await this.usersRepository.save(user);
 
-    const userWithoutPassword = exclude(user, 'password');
+    const userMapped = UserMapper.toDTO(user);
 
-    return userWithoutPassword;
+    return userMapped;
   }
 }
 

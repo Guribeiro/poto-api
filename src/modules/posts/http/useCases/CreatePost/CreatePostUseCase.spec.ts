@@ -49,4 +49,32 @@ describe('create post', () => {
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
+
+  it('should not be able to create new post before interval of 24 hours', async () => {
+    const user = await fakeUsersRepository.create({
+      username: 'username',
+      email: 'email@email.com',
+      full_name: 'full name',
+      avatar: 'avatar.jpg',
+      password: 'password',
+    });
+
+    await fakePostRepository.create({
+      user_id: user.id,
+      subtitle: 'subtitle',
+      photo: 'photo.png',
+      longitude: 12345678,
+      latitude: 12345678,
+    });
+
+    await expect(
+      createPostUseCase.execute({
+        user_id: user.id,
+        subtitle: 'subtitle',
+        photo: 'photo.png',
+        longitude: 12345678,
+        latitude: 12345678,
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
 });
