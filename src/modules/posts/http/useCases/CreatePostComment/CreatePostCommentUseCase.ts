@@ -2,6 +2,8 @@ import { Likes, Posts, Comments } from '@prisma/client';
 import { injectable, inject } from 'tsyringe';
 import AppError from '@shared/errors/AppError';
 
+import { PostMapper } from '../../mappers/PostMapper';
+
 import { Complement } from '@modules/posts/types';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import IPostsRepository from '@modules/posts/repositories/IPostsRepository';
@@ -49,6 +51,8 @@ class CreatePostCommentUseCase {
       throw new AppError('post could not be found');
     }
 
+    const postMapped = PostMapper.toDTO(post);
+
     await this.postCommentsRepository.create({
       user_id,
       post_id,
@@ -61,7 +65,7 @@ class CreatePostCommentUseCase {
 
     const likes = await this.postLikesRepository.findManyByPostId(post.id);
 
-    const postUpdated = Object.assign<Posts, Complement>(post, {
+    const postUpdated = Object.assign<Posts, Complement>(postMapped, {
       _likes_count: likes.length,
       _comments_count: comments.length,
       likes,

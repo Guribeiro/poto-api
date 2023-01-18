@@ -10,7 +10,9 @@ import IPostsRepository, {
 } from '@modules/posts/repositories/IPostsRepository';
 import IPostLikesRepository from '@modules/posts/repositories/IPostLikesRepository';
 import IPostCommentsRepository from '@modules/posts/repositories/IPostCommentsRepository';
-import { exclude } from '@shared/prisma/client';
+
+import { PostMapper } from '@modules/posts/http/mappers/PostMapper';
+import { UserMapper } from '@modules/users/http/mappers/UserMapper';
 
 interface Request {
   user_id: string;
@@ -61,25 +63,31 @@ class ListFeedPostsUseCase {
         coordinates,
       });
 
-    const userWithoutPassword = exclude(user, 'password');
+    const mappedPosts = posts.map(post => PostMapper.toDTO(post));
 
-    for await (const post of posts) {
+    for await (const post of mappedPosts) {
       const likes = await this.postLikesRepository.findManyByPostId(post.id);
 
       const comments = await this.postCommentsRepository.findManyByPostId(
         post.id,
       );
 
-      Object.assign(post, {
-        user: userWithoutPassword,
-        likes,
-        _likes_count: likes.length,
-        comments,
-        _comments_count: comments.length,
-      });
+      const user = await this.usersRepository.findOneById(post.user_id);
+
+      if (user) {
+        const userMapped = UserMapper.toDTO(user);
+
+        Object.assign(post, {
+          user: userMapped,
+          likes,
+          _likes_count: likes.length,
+          comments,
+          _comments_count: comments.length,
+        });
+      }
     }
 
-    return posts;
+    return mappedPosts;
   }
 }
 

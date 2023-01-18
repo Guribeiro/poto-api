@@ -3,8 +3,8 @@ import { injectable, inject } from 'tsyringe';
 
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import IPostsRepository from '@modules/posts/repositories/IPostsRepository';
+import { UserMapper } from '../../mappers/UserMapper';
 
-import { exclude } from '@shared/prisma/client';
 import AppError from '@shared/errors/AppError';
 
 interface IRequest {
@@ -38,11 +38,11 @@ class ShowUserUseCase {
       user_profile_id,
     );
 
-    Object.assign(userProfile, { posts: userProfilePosts });
+    const userProfileMapped = UserMapper.toDTO(userProfile);
 
-    const userProfileWithoutPassword = exclude(userProfile, 'password');
+    Object.assign(userProfileMapped, { posts: userProfilePosts });
 
-    return userProfileWithoutPassword;
+    return userProfileMapped;
   }
 }
 

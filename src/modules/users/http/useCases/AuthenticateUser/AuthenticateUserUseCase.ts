@@ -7,8 +7,8 @@ import IUserTokensRepository from '@modules/users/repositories/IUserTokensReposi
 import IHashProvider from '@modules/users/infra/providers/HashProvider/models/IHashProvider';
 import IJsonWebTokenProvider from '@modules/users/infra/providers/JsonwebtokenProvider/models/IJsonWebTokenProvider';
 
+import { UserMapper } from '../../mappers/UserMapper';
 import AppError from '@shared/errors/AppError';
-import { exclude } from '@shared/prisma/client';
 import authConfig from '@config/auth';
 
 interface Request {
@@ -85,10 +85,10 @@ class AuthenticateUserUseCase {
       expires_date: refresh_token_expires_date,
     });
 
-    const userWithoutPassword = exclude(user, 'password');
+    const userMapped = UserMapper.toDTO(user);
 
     return {
-      user: userWithoutPassword,
+      user: userMapped,
       token,
       refresh_token,
     };

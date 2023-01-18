@@ -32,7 +32,14 @@ class PostsRepository implements IPostsRepository {
       },
       include: {
         user: true,
+        _count: {
+          select: {
+            comments: true,
+            likes: true,
+          },
+        },
         likes: true,
+        comments: true,
       },
     });
 

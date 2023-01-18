@@ -5,6 +5,7 @@ import { startOfDay, endOfDay } from 'date-fns';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import IPostsRepository from '@modules/posts/repositories/IPostsRepository';
 import AppError from '@shared/errors/AppError';
+import { PostMapper } from '@modules/posts/http/mappers/PostMapper';
 
 interface CreatePostUseCaseRequest {
   request: {
@@ -47,7 +48,7 @@ class CreatePostUseCase {
       });
 
     if (findPostToday) {
-      throw new AppError('you can post only once per day', 401);
+      throw new AppError('you can post only once per day', 400);
     }
 
     const post = await this.postsRepository.create({
@@ -58,7 +59,7 @@ class CreatePostUseCase {
       longitude,
     });
 
-    return post;
+    return PostMapper.toDTO(post);
   }
 }
 

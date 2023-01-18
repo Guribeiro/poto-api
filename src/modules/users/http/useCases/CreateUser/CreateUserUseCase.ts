@@ -4,8 +4,8 @@ import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import IHashProvider from '@modules/users/infra/providers/HashProvider/models/IHashProvider';
 
+import { UserMapper } from '../../mappers/UserMapper';
 import { Users } from '@prisma/client';
-import { exclude } from '@shared/prisma/client';
 import AppError from '@shared/errors/AppError';
 
 interface Request extends ICreateUserDTO {}
@@ -52,9 +52,9 @@ class CreateUserUseCase {
       avatar,
     });
 
-    const userWithoutPassword = exclude(user, 'password');
+    const userMapped = UserMapper.toDTO(user);
 
-    return userWithoutPassword;
+    return userMapped;
   }
 }
 
